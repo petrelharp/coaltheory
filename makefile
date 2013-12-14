@@ -16,3 +16,12 @@ publish :
 	make -f gh-pages.mk publish
 	git push origin gh-pages
 	git checkout master
+
+clean : 
+	-rm -f *.aux *.log *.out *.toc *.nav *.snm *.vrb texput.*
+
+%.pdf : %.tex
+	rm -f texput.*
+	(cat header.tex; echo '\input{$<}'; echo '\end{document}') | pdflatex
+	(cat header.tex; echo '\input{$<}'; echo '\end{document}') | pdflatex
+	mv texput.pdf $@
