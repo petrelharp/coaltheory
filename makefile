@@ -1,8 +1,18 @@
-.PHONY : publish
+### To set up the gh-pages branch:
+# git checkout --orphan gh-pages
+# (REMOVE FILES LYING AROUND NOW)
+# cp directory-to-gh-pages-stuff/* .
+# git add (STUFF JUST ADDED)
 
+
+
+.PHONY : publish
 
 publish : 
 	git checkout gh-pages
-	make gh-pages
+	# update list of files
+	git show master:html-these-files.mk > html-these-files.mk
+	# make html and xhtml from rules in gh-pages.mk, which exists in the gh-pages branch
+	make -f gh-pages.mk publish
 	git push origin gh-pages
 	git checkout master

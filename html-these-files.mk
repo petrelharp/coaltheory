@@ -1,5 +1,5 @@
 # put here the list of source files to make html and xhtml files
 #  (and any other commands you want run in the makefile in the gh-pages branch before making the (x)html)
 
-HTML = outline.md
-XHTML = ${HTML}
+MDS = outline.md
+TEXS = 
