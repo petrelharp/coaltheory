@@ -1,0 +1,216 @@
+%. Pedigrees, allele frequencies, and lineages
+% * recombination, segregation, and mutation
+% * Moran and Cannings models
+%   * including general, nonhomogeneous
+%   * as generating a pedigree
+% * forwards and reverse processes
+% * limiting, continuous process
+
+
+%%%%%%% %%%%%%%%
+\section*{General goal}
+
+We are presented with data: genome sequences plus other information,
+about a number of individuals that are usually random samples from some population(s).
+No matter what our analysis goal --
+estimate levels of relatedness between the samples;
+infer their ancestral genome sequence(s);
+identify genomic locations subject to selection
+-- we must understand the relationship between process parameters
+(e.g.\ migration rates, selection coefficients)
+and the observed genomic patterns of dissimilarity.
+
+
+
+%%%%%%% %%%%%%%%
+\section{Recombination, segregation, and mutation}
+
+First, a reminder about how reproduction makes a new genome out of the genomes of the parents, in diploids.
+There are exceptions (of course), but mostly,
+each organism has two copies of each chromosome (counting sex chromosomes as a pair), one from mom and one from dad.
+Offspring are the union of two gametes (an egg and a spermatid),
+and each gamete is produced by a single diploid cell:
+\begin{itemize}
+    \item duplicating each chromosome (by mitosis)
+    \item recombining the homlogous copies
+    \item segregating these copies among four daughter cells.
+\end{itemize}
+Sometimes all four daughter cells become gametes;
+sometimes (e.g.\ female meiosis in mammals) only one will.
+
+
+\paragraph{Recombination} is complicated, varies along the genome, and is affected by genomic factors and motifs.
+To make it tractable, we assume that recombination breakpoints occur as a Poisson point process 
+with constant mean of 2 breakpoint per unit of length,
+and that each breakpoint is a crossing over between a randomly chosen maternal and a randomly chosen paternal chromosome.
+(This produces an average of 1 crossover per chromosome per unit length, 
+i.e.\ we are measuring length in ``genetic map length''.)
+
+
+\paragraph{Mutation}
+Evolution needs ``descent \emph{with modification}'' -- so we need mutation, also.
+At the level of detail we use here, we'll simply model mutation as another Poisson point process --
+suppose that each gamete differs from its progenitor chromosome at the points of an Poisson point process;
+usually we assume this has mean rate $\mu$ per unit of map length,
+but in reality this rate varies along the genome.
+
+\paragraph{Segregation}
+Once four gametes are produced, it remains to be decided which of the four produce the offspring.
+We assume that one is chosen uniformly at random,
+independently of the result of recombination.
+(Again, there are exceptions.)
+
+
+%%%%%%% %%%%%%%%
+\section{Mate choice: pedigrees}
+
+Now that we have a model for how to produce offspring from two parents,
+to model how genes move around in a population,
+we need a model for how mates are chosen.
+There are various models of ``random mating''.
+
+\paragraph{The diploid Moran model:}
+Continuous-time, fixed population size, overlapping generations.
+In continuous time, each individual, at rate 1, chooses another uniformly at random
+with whom to mate;
+they produce one offspring
+that replaces a randomly chosen individual (possibly including the parents).
+
+\paragraph{The diploid Cannings model:}
+Discrete time, varying population size, nonoverlapping generations.
+Suppose at time $t$ there are $N_t$ members of the population,
+which we take as a given trajectory.
+Each pair of individuals could potentially produce some offspring;
+let $X_{ij}$ denote the number produced in this event by pair $(i,j)$ with $i$ as the mother and $j$ as the father for each $1 \le i,j \le N_{t}$.
+Suppose that the $X_{ij}$ are \emph{exchangeable},
+i.e.\ that $(X_{ij})_{i,j=1}^{N_{t}} \deq (X_{\pi(i)\pi(j)})_{i,j=1}^{N_{t}}$ for any permutation $\pi$ of $(1,2,\ldots,N_{t})$,
+and that $\sum_{ij} X_{ij} = N_{t+1}$.
+Note that the organisms could be hermaphrodite or unisexual,
+as long as we assume that sex determination is independent of siblingship,
+and so effectively make sex determination the first step of reproduction.
+
+
+Each of these produces a \emph{random pedigree}, 
+i.e.\ a directed graph with nodes indexed by $(t,k)$, for $1 \le k \le N_t$
+and two types of edges, corresponding to maternal versus paternal relationships.
+Each arrow represents one meiosis, i.e.\ the result of recombination and segration to produce a gamete.
+If we can assume that genetic material does not affect mate choice,
+then a model for a population can first choose a random pedigree,
+then determine genetic relatedness by making the choices of recombination and segregation
+independently in each meiosis.
+
+
+
+%%%%%%% %%%%%%%%
+\section*{Aside: The genome is not passive}
+
+Of course, the genes an individual carries can have quite a strong influence
+on their mate choice, number of offspring, and even on the outcome of recombination and segregation.
+In particular, once we know the genomes of every individual, the Cannings model makes no sense,
+since individuals are clearly not exchangeable.
+This makes things much more complicated,
+and we do our best to ignore it,
+for instance, by imagining we are tracking only segments of the genome not under selection,
+so that genetic variation in fitness only contributes to the distribution of offspring number.
+
+
+%%%%%%% %%%%%%%%
+\section{Summary statistics}
+
+Forget about the specifics of the mate choice models for the moment.
+First let's think about the sorts of summary statistics we can compute from the data.
+First, we fix some notation.
+For a sample of individuals indexed by some set $A$,
+genotyped at a set of genomic positions indexed by $S$,
+the data are $\{G_{ijk} \; : \; i \in A \; j \in S \; k \in \{m,p\} \}$,
+i.e.\ $G_{ijm}$ is allele that the $i^\mathrm{th}$ individual inherited at the $j^\mathrm{th}$ position from her mother,
+and $G_{ijp}$ is the corresponding allele inherited from her father.
+
+
+\paragraph{Heterozygosity} in a group of individuals in a genomic region 
+is the probability that a randomly chosen individual is heterozygous at a randomly chosen nucleotide,
+or 
+\begin{align}
+  H_O = \frac{ \# \left\{ (i,j) \st i \in A \; j \in S \; G_{ijp} \neq G_{ijm} \right\} }{ |S|\,|A| } ,
+\end{align}
+where $|S|$ denotes the total number of loci and $|A|$ denotes the total number of individuals.
+
+In other words, $H_O$ is the proportion of homologous alleles that differ from each other, across $S$ and across $A$.
+By calling them ``homologous'' we assume they share a common ancestor;
+so if they differ there must have occurred a mutation since that common ancestor.
+Take a single individual $i$,
+suppose that the chance of a mutation occurring at site $j$ in a particular meiosis is $\mu$,
+and that there have been $\tau_{ij}$ generations since the common ancestor of the maternal and paternal copies.
+The probability that there has been no mutations since that time is $(1-\mu)^{2 \tau_{ij}}$,
+since there are $2 \tau_{ij}$ meioses separating the two.
+The proportion of heterozygous sites is determined by the empirical distribution 
+of times back to the most common ancestor of paired homologous sites, averaged across sites and across individuals.
+Let $\tau_H$ denote this distribution, i.e.\ $\P\{ \tau_H = t \} = \#\{ (i,j) \st \tau_{ij} = t \} / |S||A|$.
+If we omit back mutation, so that, once mutated, the two can never be identical again,
+then
+\begin{align}
+  H_O &= \frac{1}{|S|\,|A|} \sum_{i \in A} \sum_{j \in S} (1-\mu)^{2 \tau_{ij}} \\
+    &= \E\left[ (1-\mu)^\tau_H \right] \\
+    &\approx \E\left[ e^{-\mu \tau_H } \right] .
+\end{align}
+Note that $\tau_H$, if it was observable, would be a good \emph{summary statistic} (albeit complicated) of the pedigree,
+and depends implicitly on the choice of individuals $A$ and the choice of genomic region $S$.
+If $\mu$ is small, then $H_O \approx \mu \E[ \tau_H ]$,
+i.e.\ the proportion of sites that an individual is heterozygous
+is equal to the mutation rates multiplied by the average time back to the common ancestor of the maternal and paternal chomosomes.
+
+
+
+\paragraph{Mean number of pairwise differences}, a.k.a.\ ``expected heterozygosity'':
+A similar statistic is the chance that two randomly chosen alleles from $A$ at a random site in $S$ differ:
+\begin{align}
+  H_E &= \frac{ \#\{ (j,i_1,i_2,k_1,k_2) \st G_{i_1jk_1} \neq G_{i_2jk_2}  \} }{2|S|\,|A|(|A|-1)}  .
+\end{align}
+If, as above, we define $\tau$ to be the random number of generations back to the most recent common ancestor
+between a uniformly chosen pair alleles in a random pair of individuals in $A$ at a randomly chosen site in $S$,
+then again
+\begin{align}
+  H_E &= \E\left[ (1-\mu)^\tau ] \approx \E\left[ e^{-\mu \tau} \right] .
+\end{align}
+
+
+
+
+%%%%%%% %%%%%%%%
+\section{Allele frequencies: forwards time}
+
+The processes described above keep track of what every individuals' genome is at each point in time.
+Now, we need to compute something.
+To get our hands on something concrete, consider the marginal process at a single nonrecombining locus.
+suppose that there are two possible variants at this locus,
+label them `0' and `1',
+and denote the frequency of `1's in the population at time $t$ by $P_t$.
+Also neglect the influence of mutation.
+The change in this frequency is equal to the difference in aggregate numbers offsprings produced by individuals 
+carrying each of the two variants,
+divided by the population size.
+If the locus is neutral
+-- i.e.\ an organism's mate choice and offspring numbers are independent of the alleles carried --
+then the average number of 
+
+\paragraph{Diploid Moran model:}
+
+
+%%%%%%% %%%%%%%%
+\section{Haploid models}
+
+Take each chromosome as an individual\ldots
+
+\paragraph{The haploid Moran model:}
+Continuous-time, fixed population size.
+In continuous time, each individual, at rate 1, 
+produces one offspring (through simple division)
+that replaces a randomly chosen individual (possibly the parent).
+
+\paragraph{The haploid Wright--Fisher model:}
+Discrete-time, varying population size.
+Suppose at time $t$ there is room for $N_t$ members of the population,
+which we take as a given trajectory.
+Each individual produces a Poisson number of offspring with large mean;
+of the total pool of offspring, a uniformly chosen set of $N_{t+1}$ of these
+are chosen to form the next generation.
