@@ -7,7 +7,7 @@ Spring 2014 -- Peter Ralph -- USC
 Outline
 =======
 
-1. Introduction and models
+1. Pedigrees, allele frequencies, and lineages
   * recombination, segregation, and mutation
   * Moran and Cannings models
     * including general, nonhomogeneous
