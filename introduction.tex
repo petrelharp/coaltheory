@@ -62,6 +62,96 @@ independently of the result of recombination.
 
 
 %%%%%%% %%%%%%%%
+\section{Summary statistics}
+
+Forget about the specifics of the mate choice models for the moment.
+First let's think about the sorts of summary statistics we can compute from the data.
+First, we fix some notation.
+For a sample of individuals indexed by some set $A$,
+genotyped at a set of genomic positions indexed by $S$,
+the data are $\{G_{ijk} \; : \; i \in A \; j \in S \; k \in \{m,p\} \}$,
+i.e.\ $G_{ijm}$ is allele that the $i^\mathrm{th}$ individual inherited at the $j^\mathrm{th}$ position from her mother,
+and $G_{ijp}$ is the corresponding allele inherited from her father.
+
+
+\subsection{Heterozygosity} in a group of individuals in a genomic region 
+is the probability that a randomly chosen individual is heterozygous at a randomly chosen nucleotide,
+or 
+\begin{align}
+  H_O = \frac{ \# \left\{ (i,j) \st i \in A \; j \in S \; G_{ijp} \neq G_{ijm} \right\} }{ |S|\,|A| } ,
+\end{align}
+where $|S|$ denotes the total number of loci and $|A|$ denotes the total number of individuals.
+
+In other words, $H_O$ is the proportion of homologous alleles that differ from each other, across $S$ and across $A$.
+By calling them ``homologous'' we assume they share a common ancestor;
+so if they differ there must have occurred a mutation since that common ancestor.
+Take a single individual $i$,
+suppose that the chance of a mutation occurring at site $j$ in a particular meiosis is $\mu$,
+and that there have been $\tau_{ij}$ generations since the common ancestor of the maternal and paternal copies.
+The probability that there has been no mutations since that time is $(1-\mu)^{2 \tau_{ij}}$,
+since there are $2 \tau_{ij}$ meioses separating the two.
+The proportion of heterozygous sites is determined by the empirical distribution 
+of times back to the most common ancestor of paired homologous sites, averaged across sites and across individuals.
+Let $\tau_H$ denote this distribution, i.e.\ $\P\{ \tau_H = t \} = \#\{ (i,j) \st \tau_{ij} = t \} / |S||A|$.
+If we omit back mutation, so that, once mutated, the two can never be identical again,
+then
+\begin{align}
+  H_O &= \frac{1}{|S|\,|A|} \sum_{i \in A} \sum_{j \in S} (1-\mu)^{2 \tau_{ij}} \\
+    &= \E\left[ (1-\mu)^\tau_H \right] \\
+    &\approx \E\left[ e^{-\mu \tau_H } \right] .
+\end{align}
+Note that $\tau_H$, if it was observable, would be a good \emph{summary statistic} (albeit complicated) of the pedigree,
+and depends implicitly on the choice of individuals $A$ and the choice of genomic region $S$.
+If $\mu$ is small, then $H_O \approx \mu \E[ \tau_H ]$,
+i.e.\ the proportion of sites that an individual is heterozygous
+is equal to the mutation rates multiplied by the average time back to the common ancestor of the maternal and paternal chomosomes.
+
+
+
+\subsection{Mean number of pairwise differences}, a.k.a.\ ``expected heterozygosity'':
+A similar statistic is the chance that two randomly chosen alleles from $A$ at a random site in $S$ differ:
+\begin{align}
+  H_E &= \frac{ \#\{ (j,i_1,i_2,k_1,k_2) \st G_{i_1jk_1} \neq G_{i_2jk_2}  \} }{2|S|\,|A|(|A|-1)}  .
+\end{align}
+If, as above, we define $\tau$ to be the random number of generations back to the most recent common ancestor
+between a uniformly chosen pair alleles in a random pair of individuals in $A$ at a randomly chosen site in $S$,
+then again
+\begin{align}
+  H_E &= \E\left[ (1-\mu)^\tau \right] \approx \E\left[ e^{-\mu \tau} \right] .
+\end{align}
+
+
+\subsection{The site frequency spectrum}
+definition, relation to time in the tree
+
+
+%%%%%%% %%%%%%%%
+\subsection{Coalescent times}
+We've seen above that 
+
+
+\subsection{Linkage}
+Ultimately, all we observe are differences and similarities in genome sequence,
+i.e.\ information left behind by mutations.
+The previous statistics were \emph{single-site} statistics,
+that looked at each site independently.
+Recombination introduces correlations between physically nearby sites,
+and is hence a nuisance for the single-site statistics,
+but also provides another very useful source of information.
+The simplest summary of this is the two-site \emph{linkage disequilibrium} statistic:
+suppose we have two sites, one of which taking values $\{A,a\}$ and the other taking values $\{B,b\}$,
+such that the probability a crossover falls between them in a generation is $r$.
+The statistic is
+\begin{align}
+  D = p_{AB} - p_A p_B = p_{AB}p_{ab} - p_{Ab}p_{aB} .
+\end{align}
+
+
+
+
+
+
+%%%%%%% %%%%%%%%
 \section{Mate choice: pedigrees}
 
 Now that we have a model for how to produce offspring from two parents,
@@ -70,14 +160,14 @@ we need a model for how mates are chosen.
 There are various models of ``random mating'',
 for instance:
 
-\paragraph{The diploid Moran model:}
+\subsection{The diploid Moran model:}
 Continuous-time, fixed population size, overlapping generations.
 In continuous time, each individual, at rate 1, chooses another uniformly at random
 with whom to mate;
 they produce one offspring
 that replaces a randomly chosen individual (possibly including the parents).
 
-\paragraph{The diploid Cannings model:}
+\subsection{The diploid Cannings model:}
 Discrete time, varying population size, nonoverlapping generations.
 Suppose at time $t$ there are $N_t$ members of the population,
 which we take as a given trajectory.
@@ -140,96 +230,6 @@ so that genetic variation in fitness only contributes to the distribution of off
   -- the probability that a given base differs from the homologous base in the parent it was inherited from.
   We will sometimes find it convenient to use $\mu = -\log(1-\mu_d)$,
   so that the probability of no mutation across $2t$ meioses is $(1-\mu_d)^{2t} = \exp(-2 t \mu )$.
-
-%%%%%%% %%%%%%%%
-\section{Summary statistics}
-
-Forget about the specifics of the mate choice models for the moment.
-First let's think about the sorts of summary statistics we can compute from the data.
-First, we fix some notation.
-For a sample of individuals indexed by some set $A$,
-genotyped at a set of genomic positions indexed by $S$,
-the data are $\{G_{ijk} \; : \; i \in A \; j \in S \; k \in \{m,p\} \}$,
-i.e.\ $G_{ijm}$ is allele that the $i^\mathrm{th}$ individual inherited at the $j^\mathrm{th}$ position from her mother,
-and $G_{ijp}$ is the corresponding allele inherited from her father.
-
-
-\paragraph{Heterozygosity} in a group of individuals in a genomic region 
-is the probability that a randomly chosen individual is heterozygous at a randomly chosen nucleotide,
-or 
-\begin{align}
-  H_O = \frac{ \# \left\{ (i,j) \st i \in A \; j \in S \; G_{ijp} \neq G_{ijm} \right\} }{ |S|\,|A| } ,
-\end{align}
-where $|S|$ denotes the total number of loci and $|A|$ denotes the total number of individuals.
-
-In other words, $H_O$ is the proportion of homologous alleles that differ from each other, across $S$ and across $A$.
-By calling them ``homologous'' we assume they share a common ancestor;
-so if they differ there must have occurred a mutation since that common ancestor.
-Take a single individual $i$,
-suppose that the chance of a mutation occurring at site $j$ in a particular meiosis is $\mu$,
-and that there have been $\tau_{ij}$ generations since the common ancestor of the maternal and paternal copies.
-The probability that there has been no mutations since that time is $(1-\mu)^{2 \tau_{ij}}$,
-since there are $2 \tau_{ij}$ meioses separating the two.
-The proportion of heterozygous sites is determined by the empirical distribution 
-of times back to the most common ancestor of paired homologous sites, averaged across sites and across individuals.
-Let $\tau_H$ denote this distribution, i.e.\ $\P\{ \tau_H = t \} = \#\{ (i,j) \st \tau_{ij} = t \} / |S||A|$.
-If we omit back mutation, so that, once mutated, the two can never be identical again,
-then
-\begin{align}
-  H_O &= \frac{1}{|S|\,|A|} \sum_{i \in A} \sum_{j \in S} (1-\mu)^{2 \tau_{ij}} \\
-    &= \E\left[ (1-\mu)^\tau_H \right] \\
-    &\approx \E\left[ e^{-\mu \tau_H } \right] .
-\end{align}
-Note that $\tau_H$, if it was observable, would be a good \emph{summary statistic} (albeit complicated) of the pedigree,
-and depends implicitly on the choice of individuals $A$ and the choice of genomic region $S$.
-If $\mu$ is small, then $H_O \approx \mu \E[ \tau_H ]$,
-i.e.\ the proportion of sites that an individual is heterozygous
-is equal to the mutation rates multiplied by the average time back to the common ancestor of the maternal and paternal chomosomes.
-
-
-
-\paragraph{Mean number of pairwise differences}, a.k.a.\ ``expected heterozygosity'':
-A similar statistic is the chance that two randomly chosen alleles from $A$ at a random site in $S$ differ:
-\begin{align}
-  H_E &= \frac{ \#\{ (j,i_1,i_2,k_1,k_2) \st G_{i_1jk_1} \neq G_{i_2jk_2}  \} }{2|S|\,|A|(|A|-1)}  .
-\end{align}
-If, as above, we define $\tau$ to be the random number of generations back to the most recent common ancestor
-between a uniformly chosen pair alleles in a random pair of individuals in $A$ at a randomly chosen site in $S$,
-then again
-\begin{align}
-  H_E &= \E\left[ (1-\mu)^\tau \right] \approx \E\left[ e^{-\mu \tau} \right] .
-\end{align}
-
-
-\paragraph{The site frequency spectrum}
-definition, relation to time in the tree
-
-
-
-\paragraph{Linkage}
-Ultimately, all we observe are differences and similarities in genome sequence,
-i.e.\ information left behind by mutations.
-The previous statistics were \emph{single-site} statistics,
-that looked at each site independently.
-Recombination introduces correlations between physically nearby sites,
-and is hence a nuisance for the single-site statistics,
-but also provides another very useful source of information.
-The simplest summary of this is the two-site \emph{linkage disequilibrium} statistic:
-suppose we have two sites, one of which taking values $\{A,a\}$ and the other taking values $\{B,b\}$,
-such that the probability a crossover falls between them in a generation is $r$.
-The statistic is
-\begin{align}
-  D = p_{AB} - p_A p_B = p_{AB}p_{ab} - p_{Ab}p_{aB} .
-\end{align}
-
-
-
-
-%%%%%%% %%%%%%%%
-\section{Coalescent times}
-We've seen above that 
-
-
 
 %%%%%%% %%%%%%%%
 \section{Allele frequencies: forwards time}

@@ -7,27 +7,40 @@ Spring 2014 -- Peter Ralph -- USC
 Outline
 =======
 
-1. Pedigrees, allele frequencies, and lineages
-  * recombination, segregation, and mutation
-  * Moran and Cannings models
-    * including general, nonhomogeneous
-    * as generating a pedigree
-  * forwards and reverse processes
-  * limiting, continuous process
-2. Single-locus theory
-  * Heterozygosity and LD and "effective population size"
-  * Ewens sampling/site frequency spectrum from mean time in tree
+1. Pedigrees and inheritance, and statistics of the realized ARG
+  * background: recombination, segregation, and mutation
+  * the ARG: embedding of recombination into the pedigree 
+  * single-site statistics
+    + heterozygosity
+    + Fst
+    + coalescent time distribution
+    + site frequency spectrum
+  * multiple-site statistics
+    + linkage disequilibrium
+    + haplotype blocks  
+2. Population models of pedigrees and lineages
+  * Moran models
+    + haploid
+    + diploid
+  * Cannings models
+  * Lambda coalescents
+3. Expected values under population models
+  * allele frequencies
+    + forwards and reverse processes
+    + limiting, continuous process
+  * single-site statistics
+    + heterozygosity and LD and "effective population size"
+    + Ewens sampling/site frequency spectrum from mean time in tree
   * distinction between population distribution and (annealed) expectation
-3. Recombination, and blocks
-  * embedding of recombination into the pedigree (ancestral recombination graph)
+4. Recombination, and blocks
   * decomposition of a sampled set into minimal collection of IBD blocks
   * distribution of age of MRCA of a site is the size-biased version of age of MRCA of a block
-  * mean block length spectrum a function of coalescent tiem distribution
-4. Junctions and multiply shared blocks
+  * mean block length spectrum a function of coalescent time distribution
+5. Junctions and multiply shared blocks
   * junctions are inherited as Mendelian alleles
   * expected number of genome-wide k-way shared recent blocks
   * parallel to rare variants
-5. Bulk coalescent theory
+6. Bulk coalescent theory
   * law of large numbers for lineages
   * single-lineage relationship to many lineages
   * distribution of longest shared block
@@ -37,6 +50,8 @@ Outline
 Readings
 ========
 
+- Coalescent Theory, (book), Wakeley
+- something by Möhle
 - [Gene genealogies and the coalescent process](http://web.eve.ucdavis.edu/pbg298/pdfs/Hudson_OxfordSurveysEvolBiol_1991.pdf), Hudson, 1990.
 - [An Ancestral Recombination Graph](http://www.math.canterbury.ac.nz/~r.sainudiin/recomb/ima.pdf), by Griffiths and Marjoram, 1997.
 - [An Ancestral Recombination Graph for Diploid Populations with Skewed Offspring Distribution](http://www.genetics.org/content/193/1/255.abstract), by Birkner, Blath, and Eldon, Genetics 2013
