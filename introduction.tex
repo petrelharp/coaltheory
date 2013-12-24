@@ -116,6 +116,31 @@ so that genetic variation in fitness only contributes to the distribution of off
 
 
 
+%%%%%%% %%%%%%%%%%%%
+\section{Conventions and definitions}
+
+\paragraph{Generations}
+  When two chromosomes share a common ancestor, we like to say that that ancestor lived some number of ``generations'' in the past.
+  For most organisms, the notion of a generation is statistical, rather than a fixed quantity.
+  What we actually care about is the number of meioses separating the two chromosomes --
+  so, we hereby define the length of a path through the pedigree in generations as one-half the number of meioses.
+  In fact, in the presence of inbreeding, it is possible for two chromosomes to have inherited different genomic regions
+  from the same ancestor along different paths through the pedigree, which may have different lengths!
+
+\paragraph{Mutation process}
+  We will mostly work in the \emph{infinite alleles} model of mutation
+  (which assumes that any mutation produces a unique allele)
+  and that mutation rates are homogeneous along the genome.
+  This is clearly not correct, but a very good approximation over the right scales.
+
+
+\paragraph{Discrete or continuous rates}
+  There is a similar tension between continuous and discrete time when it comes to mutation rates.
+  Here we define $\mu_d$ to be the (``discrete'') mutation rate per generation per base 
+  -- the probability that a given base differs from the homologous base in the parent it was inherited from.
+  We will sometimes find it convenient to use $\mu = -\log(1-\mu_d)$,
+  so that the probability of no mutation across $2t$ meioses is $(1-\mu_d)^{2t} = \exp(-2 t \mu )$.
+
 %%%%%%% %%%%%%%%
 \section{Summary statistics}
 
@@ -128,15 +153,6 @@ the data are $\{G_{ijk} \; : \; i \in A \; j \in S \; k \in \{m,p\} \}$,
 i.e.\ $G_{ijm}$ is allele that the $i^\mathrm{th}$ individual inherited at the $j^\mathrm{th}$ position from her mother,
 and $G_{ijp}$ is the corresponding allele inherited from her father.
 
-
-\begin{definition}{Generations}
-  When two chromosomes share a common ancestor, we like to say that that ancestor lived some number of ``generations'' in the past.
-  For most organisms, the notion of a generation is statistical, rather than a fixed quantity.
-  What we actually care about is the number of meioses separating the two chromosomes --
-  so, we hereby define the length of a path through the pedigree in generations as one-half the number of meioses.
-  In fact, in the presence of inbreeding, it is possible for two chromosomes to have inherited different genomic regions
-  from the same ancestor along different paths through the pedigree, which may have different lengths!
-\end{definition}
 
 \paragraph{Heterozygosity} in a group of individuals in a genomic region 
 is the probability that a randomly chosen individual is heterozygous at a randomly chosen nucleotide,
@@ -275,9 +291,26 @@ Define $A_k$ and $\tau_k$ to be the ancestor and coalescent time for the segment
 The break points $X$ and associated statistics are essentially unobservable,
 but turn out to be very useful anyhow.
 
-\begin{figure}[ht]
+Now imagine walking along a chromosome from one end to the other, beginning with the TMRCA $\tau_0$ at the end of the chromosome.
+As is made formal below,
+the distance we have to go before $X_1$ is Exponential with rate $\tau_0$,
+and $R_1$, the time back to the recombination that switched us from one path through the pedigree to another is uniform on $[0,\tau_0]$.
+% NOTE not quite right since it could fall on either path back to the ancestor which could be different lengths
+The distribution of $\tau_1$ depends on $\tau_0$ and on $R_1$ but not on $X_1$.
+Similarly, the $X_2-X_1$ and $R_2$ are conditionally independent of each other and everything else so far given $\tau_1$,
+but then $\tau_2$ depends on $\tau_0$, $\tau_1$, $R_1$, and $R_2$.
+The entire sequence along a chromosome of length $G$ can be generated
+by first sampling an infinite sequence $\tau_0,\tau_1,\tau_2,\ldots$,
+then sampling $L_1', L_2', \ldots$ to be independent Exponentials with $\E[L_k] = 1/\tau_k$,
+defining $N = \min \{n : \sum_{k =1}^n L_k' \ge G \}$,
+then letting $L_k = L_k'$ for $1 \le k < N$ and $L_N = G - \sum_{k =1}^N L_k'$.
+The sequence $\tau$ is stationary
+and with the property that $(\tau_1, \tau_2, \ldots, \tau_n) \deq  (\tau_n, \tau_{n-1}, \ldots, \tau_1)$ for each $n$.
+
+
+\begin{figure}[ht!]
   \begin{center}
-    \includegraphics{IBD-sequence-diagram}
+    \includegraphics[width=\textwidth]{IBD-sequence-diagram}
   \end{center}
   \caption{
   Sequnce of coalescent times $\tau$, recombination times $R$, and IBD lengths $L$ along a chromosome.
@@ -287,9 +320,9 @@ but turn out to be very useful anyhow.
 \begin{lemma}{Joint distribution of neighboring shared segments}
   \begin{enumerate}
       
-    \item[(a)] Conditioned on $X_{k-1}$ and $\tau_{k}$, the length $L_k$ has the same distribution as $\max\{Z/\tau_k,G-X_{k-1}\}$,
+    \item[(a)] Conditioned on $X_{k-1}$ and $\tau_{k}$, the length $X_k-X_{k-1}$ has the same distribution as $\max\{Z/\tau_k,G-X_{k-1}\}$,
       where $Z$ is an independent Exponential random variable with mean 1,
-      and the time $R_k$ has a uniform distribution on $[0,\tau_k]$, independent of $L_k$.
+      and the time $R_k$ has a uniform distribution on $[0,\tau_k]$, independent of $X_k-X_{k-1}$.
 
     \item[(b)] Let $(X_-,R_-)$ and $(X_+,R_+)$ be the locations and recombination times of the closest events
       to the left and right of $x$, respectively.
@@ -303,12 +336,12 @@ but turn out to be very useful anyhow.
 
 \begin{proof}
 
-  \paragraph{(b)} The probability that there were no crossovers in the segment $[x,x+y)$ in any of the $2\tau_x$ meioses on the path back to $A_x$
+  \textbf{(b)} The probability that there were no crossovers in the segment $[x,x+y)$ in any of the $2\tau_x$ meioses on the path back to $A_x$
   is, by definition, $\exp(-x \tau_x)$ -- and hence, the distance along the chromosome to the next recombination event that causes a switch is exponential with rate $\tau_x$,
   and the first such recombination event is uniformly distributed across the possible meioses,
   by properties of competing Poisson processes.
 
-  \paragraph{(a)} This follows from (a) by conditioning on $X_- = x$.
+  Part (a) follows from (b) by conditioning on $X_- = x$.
 
 \end{proof}
 
