@@ -36,15 +36,16 @@ clean :
 # make pdfs locally
 $(DISPLAYDIR)/%.pdf : %.tex
 	rm -f texput.*
-	(cat header.tex; echo '\input{$<}'; echo '\end{document}') | pdflatex
-	(cat header.tex; echo '\input{$<}'; echo '\end{document}') | pdflatex
+	( cat header.tex; echo '\input{$<}'; cat tailer.tex ) | pdflatex
+	bibtex texput.aux
+	( cat header.tex; echo '\input{$<}'; cat tailer.tex ) | pdflatex
 	mv texput.pdf $@
 
 ## TO-DO:
 # automatically figure out which things to tex up
 # remove intermediate .xml and .pdf files
 
-display/introduction.pdf : IBD-sequence-diagram.pdf
+display/introduction.pdf : IBD-sequence-diagram.pdf frequency-spectra-trees.pdf
 
 publish : $(WEBPAGES) clean
 

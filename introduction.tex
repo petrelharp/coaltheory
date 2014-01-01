@@ -10,22 +10,32 @@
 %%%%%%% %%%%%%%%
 \section*{General goal}
 
-We are presented with data: genome sequences plus other information,
-about a number of individuals that are usually random samples from some population(s).
-No matter what our analysis goal --
+Perhaps we are presented with data: genome sequences plus other information
+about a number of individuals that are usually random samples from some population(s),
+and we want to learn about their shared history: 
 estimate levels of relatedness between the samples;
 infer their ancestral genome sequence(s);
-identify genomic locations subject to selection
--- we must understand the relationship between process parameters
+or identify genomic locations subject to selection.
+Or, perhaps we want to compute the levels of genetic diversity 
+predicted under a certain population model .
+In either case, we must understand the relationship between process parameters
 (e.g.\ migration rates, selection coefficients)
 and the observed genomic patterns of dissimilarity.
 
+This will start out from the unconvential direction
+of treating the usual population genetic quantities as summary statistics
+of the (unobserved) pedigree--with--recombination.
+Usually, things like ``coalescent time'' are only defined in the context of mathematical models,
+but can equally well be thought of as descriptive statistics,
+whose expected values we can compute under certain models.
+This seems to me at least conceptually useful when thinking about such quantities
+as estimated from real data, where assumptions such as random mating are rarely met.
 
 
 %%%%%%% %%%%%%%%
 \section{Recombination, segregation, and mutation}
 
-First, a reminder about how reproduction makes a new genome out of the genomes of the parents, in diploids.
+First, an outline of how we model diploid reproduction, i.e.\ making a new genome out of the genomes of the parents.
 There are exceptions (of course), but mostly,
 each organism has two copies of each chromosome (counting sex chromosomes as a pair), one from mom and one from dad.
 Offspring are the union of two gametes (an egg and a spermatid),
@@ -41,17 +51,18 @@ sometimes (e.g.\ female meiosis in mammals) only one will.
 
 \paragraph{Recombination} is complicated, varies along the genome, and is affected by genomic factors and motifs.
 To make it tractable, we assume that recombination breakpoints occur as a Poisson point process 
-with constant mean of 2 breakpoint per unit of length,
+with constant mean of 2 breakpoints per unit of length,
 and that each breakpoint is a crossing over between a randomly chosen maternal and a randomly chosen paternal chromosome.
-(This produces an average of 1 crossover per chromosome per unit length, 
-i.e.\ we are measuring length in ``genetic map length''.)
+This produces an average of 1 crossover per chromosome per unit length, 
+i.e.\ we are measuring length in genetic map length.
 
 
 \paragraph{Mutation}
-Evolution needs ``descent \emph{with modification}'' -- so we need mutation, also.
-At the level of detail we use here, we'll simply model mutation as another Poisson point process --
-suppose that each gamete differs from its progenitor chromosome at the points of an Poisson point process;
-usually we assume this has mean rate $\mu$ per unit of map length,
+Evolution needs ``descent \emph{with modification}'' -- and, from thence comes our data -- so we need mutation, also.
+In a major concession to mathematical convenience, we'll simply model mutation as another Poisson point process --
+suppose that each gamete differs from its progenitor chromosome at the points of an Poisson point process.
+This is the ``infinite sites model'', assuming that mutation cannot hit at the same location twice.
+Usually we assume the point process of mutations has mean rate $\mu$ per unit of map length,
 but in reality this rate varies along the genome.
 
 \paragraph{Segregation}
@@ -62,23 +73,125 @@ independently of the result of recombination.
 
 
 %%%%%%% %%%%%%%%
+\section{The pedigree, with recombination}
+
+The \emph{pedigree} of a set of individuals is a graph 
+describing all parent-offspring relationships between these
+and some set of their ancestors.
+The \emph{population pedigree} describes all such relationships
+between all individuals living and possibly dead.
+This records mate choice,
+but omits the important information of recombination and segregation,
+i.e.\ which parts of each chromosome derive from which of the parents' two homologous copies.
+Adding this information to the pedigree obtains what is known as the \emph{ancestral recombination graph}, or ARG.
+There are a number of ways to formalize this notion;
+see \citep{marjoram,hudson} for discussions.
+One way simply notes that the relatedness structure at any particular locus
+is a treelike subset of the pedigree,
+and that the collection of these trees -- one for each base in the genome, say --
+is sufficient to reconstruct the entire history of inheritance, recombination and segregation.
+Alternatively, one can annotate each link in the pedigree with a labeling of the genome by $\{m,p\}$,
+denoting which segments of the parent's maternal and paternal chromosomal copies were passed down along that link.
+See figure \ref{fig:pedigree_ibd} for a partial depiction.
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics[width=3.5in]{pedigree-ibd-recombination}
+  \end{center}
+  \caption{
+  A small pedigree relating two cousins to their six grandparents,
+  with the extra information of recombination and segregation on one chromosome
+  encoded by a coloring: each chromosome is composed
+  of a patchwork of the grandparental chromosomes.
+  \label{fig:pedigree_ibd}
+  }
+\end{figure}
+
+%%%%%%% %%%%%%%%
+\subsection{Coalescence times}
+
+Perhaps the simplest thing we can obtain from the full ancestral recombination graph 
+is the typical degree of relatedness of pairs of individuals.
+More concretely, we might ask for the empirical distribution
+of pairwise times back to the most recent common ancestor
+across all pairs of chromosomes and all loci:
+the distribution of $\tau_T$, if $\tau_T$ is the length of a randomly chosen one of these paths.
+
+An slightly different way of formulating this is as follows:
+pick two random chromosomes and a random locus;
+follow the lineages of the two alleles at that locus up through the pedigree
+until their common ancestor;
+one-half the number of meioses encountered is $\tau_T$.
+Since these two lineages will henceforth move together through if followed further back through the pedigree,
+$\tau_T$ is known as the ``coalescence time''.
+
+More generally, the phrase ``coalescence time'' is shorthand
+for ``number of generations back to the most recent common ancestor'',
+taken as a random quantity across random samples of sets of chromosomes and/or loci.
+In this formulation, it is the empirical distribution of lengths of a certain set of paths 
+to common ancestors through the pedigree.
+
+
+%%%%%%% %%%%%%%%%%%%
+\section{Conventions and definitions}
+
+\paragraph{Generations}
+  When two chromosomes share a common ancestor, we like to say that that ancestor lived some number of ``generations'' in the past.
+  For most organisms, the notion of a generation is statistical, rather than a fixed quantity.
+  What we actually care about is the number of meioses separating the two chromosomes --
+  so, we hereby define the length of a path through the pedigree in generations as one-half the number of meioses.
+  In fact, in the presence of inbreeding, it is possible for two chromosomes to have inherited different genomic regions
+  from the same ancestor along different paths through the pedigree, which may have different lengths!
+
+\paragraph{Mutation process}
+  We will mostly work in the \emph{infinite alleles} model of mutation
+  (which assumes that any mutation produces a unique allele)
+  and that mutation rates are homogeneous along the genome.
+  This is clearly not correct, but a very good approximation over the right scales.
+
+
+\paragraph{Discrete or continuous rates}
+  There is a similar tension between continuous and discrete time when it comes to mutation rates.
+  Here we define $\mu_d$ to be the (``discrete'') mutation rate per generation per base 
+  -- the probability that a given base differs from the homologous base in the parent it was inherited from.
+  We will sometimes find it convenient to use $\mu = -\log(1-\mu_d)$,
+  so that the probability of no mutation across $2t$ meioses is $(1-\mu_d)^{2t} = \exp(-2 t \mu )$.
+
+
+%%%%%%% %%%%%%%%
 \section{Summary statistics}
 
-Forget about the specifics of the mate choice models for the moment.
-First let's think about the sorts of summary statistics we can compute from the data.
 First, we fix some notation.
 For a sample of individuals indexed by some set $A$,
 genotyped at a set of genomic positions indexed by $S$,
-the data are $\{G_{ijk} \; : \; i \in A \; j \in S \; k \in \{m,p\} \}$,
-i.e.\ $G_{ijm}$ is allele that the $i^\mathrm{th}$ individual inherited at the $j^\mathrm{th}$ position from her mother,
+the data are $\{G_{ijk} \; : \; i \in A, \; j \in S, \; k \in \{m,p\} \}$,
+i.e.\ $G_{ijm}$ is the allele that the $i^\mathrm{th}$ individual inherited at the $j^\mathrm{th}$ position from her mother,
 and $G_{ijp}$ is the corresponding allele inherited from her father.
 
+Regardless of the process that has generated $G$, 
+it makes sense to think about the sampling distribution of $G$,
+and associated statistics --
+i.e.\ the distribution of $G$ induced by some sort of random sampling of the individuals.
+Often, we can actually obtain from $G$ a good estimate of the entire sampling distribution.
+For instance, we can estimate the distribution of 
+the the number of nucleotide differences between two individuals in a 100bp region
+across all such regions and all pairs of sampled individuals,
+as long as $G$ can be reasonably regarded as a random sample from some population.
+We can further estimate conditional sampling distributions,
+e.g.\ number of such differences as a function of geographical distance between them,
+or in protein coding regions.
 
-\subsection{Heterozygosity} in a group of individuals in a genomic region 
+Here we relate the sampling distributions of a number of statistics easily computable form $G$
+to sampling distributions of properties of the pedigree with recombination.
+
+
+\subsection{Heterozygosity} 
+
+The ``observed heterozygosity'' in a group of individuals in a genomic region 
 is the probability that a randomly chosen individual is heterozygous at a randomly chosen nucleotide,
 or 
 \begin{align}
-  H_O = \frac{ \# \left\{ (i,j) \st i \in A \; j \in S \; G_{ijp} \neq G_{ijm} \right\} }{ |S|\,|A| } ,
+  H_O = \frac{ \# \left\{ (i,j) \st i \in A, \; j \in S, \; G_{ijp} \neq G_{ijm} \right\} }{ |S|\,|A| } ,
 \end{align}
 where $|S|$ denotes the total number of loci and $|A|$ denotes the total number of individuals.
 
@@ -86,19 +199,18 @@ In other words, $H_O$ is the proportion of homologous alleles that differ from e
 By calling them ``homologous'' we assume they share a common ancestor;
 so if they differ there must have occurred a mutation since that common ancestor.
 Take a single individual $i$,
-suppose that the chance of a mutation occurring at site $j$ in a particular meiosis is $\mu$,
+suppose that the chance of a mutation occurring at site $j$ in a particular meiosis is $\mu_d$,
 and that there have been $\tau_{ij}$ generations since the common ancestor of the maternal and paternal copies.
-The probability that there has been no mutations since that time is $(1-\mu)^{2 \tau_{ij}}$,
+The probability that there has been no mutations since that time is $(1-\mu_d)^{2 \tau_{ij}}$,
 since there are $2 \tau_{ij}$ meioses separating the two.
 The proportion of heterozygous sites is determined by the empirical distribution 
 of times back to the most common ancestor of paired homologous sites, averaged across sites and across individuals.
 Let $\tau_H$ denote this distribution, i.e.\ $\P\{ \tau_H = t \} = \#\{ (i,j) \st \tau_{ij} = t \} / |S||A|$.
-If we omit back mutation, so that, once mutated, the two can never be identical again,
-then
+If, as assumed, there is no back mutation, then,
 \begin{align}
-  H_O &= \frac{1}{|S|\,|A|} \sum_{i \in A} \sum_{j \in S} (1-\mu)^{2 \tau_{ij}} \\
-    &= \E\left[ (1-\mu)^\tau_H \right] \\
-    &\approx \E\left[ e^{-\mu \tau_H } \right] .
+  H_O &= \frac{1}{|S|\,|A|} \sum_{i \in A} \sum_{j \in S} (1-\mu_d)^{2 \tau_{ij}} \\
+  &= \E\left[ (1-\mu_d)^{2 \tau_H} \right] \\
+    &= \E\left[ e^{-2 \mu \tau_H } \right] .
 \end{align}
 Note that $\tau_H$, if it was observable, would be a good \emph{summary statistic} (albeit complicated) of the pedigree,
 and depends implicitly on the choice of individuals $A$ and the choice of genomic region $S$.
@@ -106,38 +218,127 @@ If $\mu$ is small, then $H_O \approx \mu \E[ \tau_H ]$,
 i.e.\ the proportion of sites that an individual is heterozygous
 is equal to the mutation rates multiplied by the average time back to the common ancestor of the maternal and paternal chomosomes.
 
+As stated, $H_O$ is a single number, the chance that a randomly chosen homologous pair of alleles differ.
+This averages over levels of relatedness of different individuals,
+as well as mutation rates and depths of relatedness that may differ systematically across loci.
+If we know local mutation rates, and partition sites according to this,
+then we can estimate $H_O(\mu) = \E\left[ e^{-2 \mu \tau_H } \right]$ as a function of $\mu$,
+obtaining an estimate of the Laplace transform of $\tau_H$.
+% Comparing frequencies of heterozygosity in genomic windows of varying sizes 
+% (i.e.\ using each 10bp window as one locus)
+% has a similar effect,
+% except that recombination makes this approximate.
 
 
-\subsection{Mean number of pairwise differences}, a.k.a.\ ``expected heterozygosity'':
-A similar statistic is the chance that two randomly chosen alleles from $A$ at a random site in $S$ differ:
+
+\subsection{Mean number of pairwise differences}
+
+Also known as ``expected heterozygosity'',
+this is the chance that two randomly chosen alleles from $A$ at a random site in $S$ differ:
 \begin{align}
   H_E &= \frac{ \#\{ (j,i_1,i_2,k_1,k_2) \st G_{i_1jk_1} \neq G_{i_2jk_2}  \} }{2|S|\,|A|(|A|-1)}  .
 \end{align}
-If, as above, we define $\tau$ to be the random number of generations back to the most recent common ancestor
-between a uniformly chosen pair alleles in a random pair of individuals in $A$ at a randomly chosen site in $S$,
-then again
+$H_E$, like $H_O$, is computable from the distribution of the number of generations available for mutation 
+where the relevant number of generations here is defined to be $\tau_T$.
+Concretely, $\tau_T$ is the number of generations back to the common ancestor
+at a uniformly chosen locus
+between two uniformly chosen chromosomes in the population
+(possibly, but not necessarily, in the same individual).
+Again,
 \begin{align}
-  H_E &= \E\left[ (1-\mu)^\tau \right] \approx \E\left[ e^{-\mu \tau} \right] .
+  H_E &= \E\left[ (1-\mu_d)^{2 \tau_T} \right] = \E\left[ e^{-2 \mu \tau_T} \right] .
 \end{align}
 
 
-\subsection{The site frequency spectrum}
-definition, relation to time in the tree
+Such measures of heterozygosity can measure not only within-group diversity
+but also between-group divergence,
+by computing e.g.\ the probability that two randomly chosen individuals
+in different subpopulations
+differ at a randomly chosen locus.
+Any such measurement can be thought of as the proportion
+of some subset of paths through the pedigree
+along which a mutation has occurred;
+(crucially) assuming that the mutation process is independent of inheritance,
+this probability of mutation only depends on the number of meioses along the path,
+and hence on the distribution of path lengths.
+Above these distributions of lengths across certain sets of paths through the pedigree
+appeared as $\tau_H$ and $\tau_T$.
+
 
 
 %%%%%%% %%%%%%%%
-\subsection{Coalescent times}
-We've seen above that 
+\subsection{The allele frequency spectra}
+
+Mutations at a locus induce a partition of a set of chromosomes --
+those who are identical at that locus.
+Heterozygosities are pairwise statistics;
+when comparing two chromosomes there are only two possible results:
+identical or not.
+When looking at larger samples, any partition is possible;
+at loci with no more than two alleles, all dichotomous partitions are possible.
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics[width=3.5in]{frequency-spectra-trees}
+  \end{center}
+  \caption{
+  \textbf{(A)} The lengths $T_3$, $T_2$, and $T_1$ (see text).
+  Note that mutations on $T_3$ are indistinguishable from those on  $T_1$ if the alleles are not polarized.
+  \textbf{(B--C)}
+  The frequency spectrum encodes information about distributions of tree shape:
+  the lower set of trees has longer internal branches, and so will have a higher chance of 2:2 partitions
+  than the upper set of trees.
+  Mutations (circles on the tree) separate ``red'' from ``black'' types;
+  assuming that mutation is independent of the pedigree implies
+  that the location of mutation is uniform (proportional to length) on the tree.
+  \label{fig:frequency_spectra_trees}
+  }
+\end{figure}
+
+Suppose we are looking at the empirical distribution of allele frequencies in a sample of size $|A|=n$
+at biallelic sites
+(the ``allele frequency spectrum'', or ``site frequency spectrum''),
+and let $(N_{j,0},N_{j,1})$ denote the numbers of sampled chromosomes that have the '0' and '1' alleles, respectively.
+The ``unfolded'' and ``folded'' allele frequency spectra are then
+\begin{align}
+  a_k^* &= \frac{ \#\{ j : N_{j,0} = k \} }{ |S| } \quad & k &\in \{0,1,\ldots,n\} \\
+  a_k &= \frac{ \#\{ j : \min\{N_{j,0},N_{j,1}\} = k \} }{ |S| } \quad & k &\in \{0,1,\ldots,\floor{n/2}\} .
+\end{align}
+If we have some way of polarizing mutations, so that e.g.\ allele `0' is more likely to be the ancestral allele,
+then the unfolded spectrum is more useful;
+otherwise, if the choice of allele labeling is arbitrary, 
+we expect $a_k^* = a_{n-k}^*$ and the folded spectrum is more natural.
+
+This distribution is obtained by averaging across loci.
+Pick a random locus, and call the tree relating the samples at that locus $T$.
+Let $|T|$ denote the total length of the tree (in meioses),
+and $T_k$ denote the total length of all branches in the tree that are subtended by exactly $k$ tips,
+for $1 \le k \le n-1$, so that $|T| = \sum_{k=1}^{n-1} T_k$.
+(see figure \ref{fig:frequency_spectra_trees}).
+Again assuming that the mutation is independent of inheritance,
+the probability that a site has no segregating mutation is
+$\exp(-\mu |T|)$, which is the value of $a_0$, up to sampling error.
+The probability that only a single segregating mutation has occurred is $\exp(-\mu |T|) \mu |T|$,
+and given this,
+the location of that mutation is uniform on the tree.
+Therefore, the expected contribution of sites with only a single segregating mutation
+to $a_k^*$ is $\E\left[ \exp(-\mu |T|) \mu T_k \right]$.
+to first order in $\mu |T|$, this says that $a_k^*$ is $\E[T_k]/\E[|T|]$,
+the average total number of ancestors of exactly $k$ of the samples
+divided by the average total number of ancestors up until the most recent common ancestor of all $n$ samples.
 
 
+
+%%%%%%% %%%%%%%%
 \subsection{Linkage}
+
 Ultimately, all we observe are differences and similarities in genome sequence,
 i.e.\ information left behind by mutations.
 The previous statistics were \emph{single-site} statistics,
 that looked at each site independently.
-Recombination introduces correlations between physically nearby sites,
-and is hence a nuisance for the single-site statistics,
-but also provides another very useful source of information.
+Recombination determines the strength of correlations between nearby sites;
+such correlations are a nuisance for single-site statistics,
+but also provide a useful source of information.
 The simplest summary of this is the two-site \emph{linkage disequilibrium} statistic:
 suppose we have two sites, one of which taking values $\{A,a\}$ and the other taking values $\{B,b\}$,
 such that the probability a crossover falls between them in a generation is $r$.
@@ -205,31 +406,6 @@ for instance, by imagining we are tracking only segments of the genome not under
 so that genetic variation in fitness only contributes to the distribution of offspring number.
 
 
-
-%%%%%%% %%%%%%%%%%%%
-\section{Conventions and definitions}
-
-\paragraph{Generations}
-  When two chromosomes share a common ancestor, we like to say that that ancestor lived some number of ``generations'' in the past.
-  For most organisms, the notion of a generation is statistical, rather than a fixed quantity.
-  What we actually care about is the number of meioses separating the two chromosomes --
-  so, we hereby define the length of a path through the pedigree in generations as one-half the number of meioses.
-  In fact, in the presence of inbreeding, it is possible for two chromosomes to have inherited different genomic regions
-  from the same ancestor along different paths through the pedigree, which may have different lengths!
-
-\paragraph{Mutation process}
-  We will mostly work in the \emph{infinite alleles} model of mutation
-  (which assumes that any mutation produces a unique allele)
-  and that mutation rates are homogeneous along the genome.
-  This is clearly not correct, but a very good approximation over the right scales.
-
-
-\paragraph{Discrete or continuous rates}
-  There is a similar tension between continuous and discrete time when it comes to mutation rates.
-  Here we define $\mu_d$ to be the (``discrete'') mutation rate per generation per base 
-  -- the probability that a given base differs from the homologous base in the parent it was inherited from.
-  We will sometimes find it convenient to use $\mu = -\log(1-\mu_d)$,
-  so that the probability of no mutation across $2t$ meioses is $(1-\mu_d)^{2t} = \exp(-2 t \mu )$.
 
 %%%%%%% %%%%%%%%
 \section{Allele frequencies: forwards time}

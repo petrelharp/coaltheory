@@ -8,7 +8,7 @@ Outline
 =======
 
 1. Pedigrees and inheritance, and statistics of the realized ARG
-  * background: recombination, segregation, and mutation
+  * modeling recombination, segregation, and mutation
   * the ARG: embedding of recombination into the pedigree 
   * single-site statistics
     + heterozygosity
