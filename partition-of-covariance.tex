@@ -1,0 +1,37 @@
+
+
+\begin{lemma}{Partition of covariance} \label{lem:covariance}
+  For random variables $X$, $Y$, and $Z$, with $\E[X^2]$ and $\E[Y^2]$ finite,
+  \begin{itemize}
+    \item[(a)]
+    \[
+      \var[X] = \E[ \var[X|Z] ] + \var[ \E[X|Z] ]
+    \]
+    \item[(b)]
+    \[
+      \cov[X,Y] = \E[ \cov[X,Y|Z] ] + \cov[ \E[X|Z], \E[Y|Z] ] .
+    \]
+  \end{itemize}
+  where $\cov[X,Y|Z] := \E[XY|Z] - \E[X|Z]\E[Y|Z]$.
+\end{lemma}
+
+\begin{proof}
+This follows from the fact that $X,Y \mapsto \E[XY]$ is the inner product on $L^2(\P)$
+and the definition of conditional expectation with respect to $Z$ as the orthogonal projection
+onto the subspace of $Z$-measurable random variables.
+Specifically, $\E[X]$ is the projection of $X$ into the space of constant random variables (since $\E[ (X-\E[X]) c ] = 0$ for any constant $c$);
+and $\E[X|Z]-\E[X]$ is the projection of $X$ into the intersection of $Z$-measurable random variables and the orthogonal complement of constant random variables
+(since $\E[ f(Z) \E[X|Z] ] = \E[ f(Z) X ]$, by definition of conditional expectation).
+Therefore, $X = \E[X] + ( \E[X|Z] - \E[X] ) + ( X - \E[X|Z] )$
+is the decomposition of $X$ into three orthogonal subspaces;
+and we have a corresponding decomposition for $Y$,
+so by Pythagoras,
+\begin{align}
+  \E[XY] &= \E[X]\E[Y] + \E[ (\E[X|Z] - \E[X])(\E[Y|Z] - \E[Y]) ] + \E[ (X - \E[X|Z])(Y - \E[Y|Z]) ]  \\
+  &= \E[X]\E[Y] + \cov[ \E[X|Z], \E[Y|Z] ] + \E[ \cov[X,Y|Z] ] ,
+\end{align}
+since $\E[\E[X|Z]] = \E[X]$ and likewise for $Y$ and for $XY$.
+\end{proof}
+
+
+

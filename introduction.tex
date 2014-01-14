@@ -1,11 +1,3 @@
-%. Pedigrees, allele frequencies, and lineages
-% * recombination, segregation, and mutation
-% * Moran and Cannings models
-%   * including general, nonhomogeneous
-%   * as generating a pedigree
-% * forwards and reverse processes
-% * limiting, continuous process
-
 
 %%%%%%% %%%%%%%%
 \section*{General goal}
@@ -17,27 +9,38 @@ estimate levels of relatedness between the samples;
 infer their ancestral genome sequence(s);
 or identify genomic locations subject to selection.
 Or, perhaps we want to compute the levels of genetic diversity 
-predicted under a certain population model .
+predicted under a certain population model.
 In either case, we must understand the relationship between process parameters
 (e.g.\ migration rates, selection coefficients)
 and the observed genomic patterns of dissimilarity.
 
-This will start out from the unconvential direction
+This discussion starts out from the unconvential direction
 of treating the usual population genetic quantities as summary statistics
-of the (unobserved) pedigree--with--recombination.
-Usually, things like ``coalescent time'' are only defined in the context of mathematical models,
+of the (unobserved) pedigree--with--recombination, the ``ancestral recombination graph'', or ARG.
+Often, things like ``coalescent time'' are defined only in the context of mathematical models,
 but can equally well be thought of as descriptive statistics,
 whose expected values we can compute under certain models.
 This seems to me at least conceptually useful when thinking about such quantities
 as estimated from real data, where assumptions such as random mating are rarely met.
 
+Some other discussions that take this point of view to at least some degree are:
+\citet{mcvean2002linkage}, OTHERS.
+The textbook ``Tree Thinking'' XXX ALSO XXX ?
+Other good references for population genetics are
+\citet{hudson1990gene} (a nice article-length review), 
+and the books
+\citet{wakeley2005coalescent} (fairly gentle)
+and \citet{ewens2004mathematical} (fairly mathematical).
+
 
 %%%%%%% %%%%%%%%
 \section{Recombination, segregation, and mutation}
 
-First, an outline of how we model diploid reproduction, i.e.\ making a new genome out of the genomes of the parents.
+First, an outline of how we model diploid reproduction, 
+i.e.\ how the autosomal genome of an offspring gets assembled from those of the parents.
 There are exceptions (of course), but mostly,
-each organism has two copies of each chromosome (counting sex chromosomes as a pair), one from mom and one from dad.
+each organism has two copies of each autosomal chromosome, 
+one from mom and one from dad.
 Offspring are the union of two gametes (an egg and a spermatid),
 and each gamete is produced by a single diploid cell:
 \begin{itemize}
@@ -54,11 +57,11 @@ To make it tractable, we assume that recombination breakpoints occur as a Poisso
 with constant mean of 2 breakpoints per unit of length,
 and that each breakpoint is a crossing over between a randomly chosen maternal and a randomly chosen paternal chromosome.
 This produces an average of 1 crossover per chromosome per unit length, 
-i.e.\ we are measuring length in genetic map length.
+i.e.\ we are measuring length in genetic map length (Morgans).
 
 
 \paragraph{Mutation}
-Evolution needs ``descent \emph{with modification}'' -- and, from thence comes our data -- so we need mutation, also.
+% We wouldn't have got far without ``descent \emph{with modification}'' -- and, from thence comes our data -- so we need mutation, also.
 In a major concession to mathematical convenience, we'll simply model mutation as another Poisson point process --
 suppose that each gamete differs from its progenitor chromosome at the points of an Poisson point process.
 This is the ``infinite sites model'', assuming that mutation cannot hit at the same location twice.
@@ -85,7 +88,7 @@ but omits the important information of recombination and segregation,
 i.e.\ which parts of each chromosome derive from which of the parents' two homologous copies.
 Adding this information to the pedigree obtains what is known as the \emph{ancestral recombination graph}, or ARG.
 There are a number of ways to formalize this notion;
-see \citep{marjoram,hudson} for discussions.
+see \citep{griffiths1997ancestral,hudson1990gene} for discussions.
 One way simply notes that the relatedness structure at any particular locus
 is a treelike subset of the pedigree,
 and that the collection of these trees -- one for each base in the genome, say --
@@ -103,12 +106,13 @@ See figure \ref{fig:pedigree_ibd} for a partial depiction.
   with the extra information of recombination and segregation on one chromosome
   encoded by a coloring: each chromosome is composed
   of a patchwork of the grandparental chromosomes.
+  XXX make additional figure showing marginal gene trees XXX
   \label{fig:pedigree_ibd}
   }
 \end{figure}
 
 %%%%%%% %%%%%%%%
-\subsection{Coalescence times}
+\subsection{Coalescence times and gene trees}
 
 Perhaps the simplest thing we can obtain from the full ancestral recombination graph 
 is the typical degree of relatedness of pairs of individuals.
@@ -117,19 +121,30 @@ of pairwise times back to the most recent common ancestor
 across all pairs of chromosomes and all loci:
 the distribution of $\tau_T$, if $\tau_T$ is the length of a randomly chosen one of these paths.
 
-An slightly different way of formulating this is as follows:
+A more precise way of formulating this is as follows:
 pick two random chromosomes and a random locus;
-follow the lineages of the two alleles at that locus up through the pedigree
+follow the lineages of the two chromosomes at that locus up through the pedigree
 until their common ancestor;
 one-half the number of meioses encountered is $\tau_T$.
 Since these two lineages will henceforth move together through if followed further back through the pedigree,
-$\tau_T$ is known as the ``coalescence time''.
+$\tau_T$ is known as the ``coalescence time'' of the two lineages.
 
-More generally, the phrase ``coalescence time'' is shorthand
+In this way, the phrase ``coalescence time'' is shorthand
 for ``number of generations back to the most recent common ancestor'',
 taken as a random quantity across random samples of sets of chromosomes and/or loci.
 In this formulation, it is the empirical distribution of lengths of a certain set of paths 
 to common ancestors through the pedigree.
+
+The path back through the pedigree along which these two chromosomes have inherited that particular locus
+is a very simple tree, with two leaves (at the samples) and a root at their most recent common ancestor;
+the height of that tree is the coalescence time.
+More generally, the ancestral recombination graph encodes the marginal tree along which, 
+at each locus, any set of sampled individuals have inherited at that locus.
+These are called ``gene trees''.
+Each gene tree follows a path through the links of the pedigree,
+and if due to recombination during one of the meioses, 
+loci $x$ and $y$ are inherited from different parental chromosomes,
+the marginal gene trees at $x$ and $y$ will differ.
 
 
 %%%%%%% %%%%%%%%%%%%
@@ -151,7 +166,6 @@ to common ancestors through the pedigree.
 
 
 \paragraph{Discrete or continuous rates}
-  There is a similar tension between continuous and discrete time when it comes to mutation rates.
   Here we define $\mu_d$ to be the (``discrete'') mutation rate per generation per base 
   -- the probability that a given base differs from the homologous base in the parent it was inherited from.
   We will sometimes find it convenient to use $\mu = -\log(1-\mu_d)$,
@@ -183,6 +197,12 @@ or in protein coding regions.
 
 Here we relate the sampling distributions of a number of statistics easily computable form $G$
 to sampling distributions of properties of the pedigree with recombination.
+
+
+\subsection{Number of segregating sites}
+
+XXX Mean and variance as obtained from distribution of total time in the sample tree, as in \citep{hudson1990gene}.
+
 
 
 \subsection{Heterozygosity} 
@@ -339,100 +359,138 @@ Consideration of the relationships multiple loci brings recombination into the p
 Perhaps the simplest summary of this is the measure of \emph{linkage disequilibrium}.
 It is a two-site statistic, and is in some sense is a single-individual statistic.
 
-Take two sites $j_1$ and $j_2$, at recombination distance $r$,
+Take two sites $\ell_1$ and $\ell_2$, at recombination distance $r$,
 so that mean number of crossovers that fall between them in a generation is $r$.
-Let $I$ be the index of a randomly chosen individual, and $K \in \{m,p\}$,
-so that $X_1 = G_{Ij_1K}$ and $X_2 = G_{Ij_2K}$ are the genotypes at $j_1$ and $j_2$ 
-on a randomly chosen chromosome, both coded as $\{0,1\}$.
-Then the measure of linkage between $j_1$ and $j_2$ is
+One statistic measuring association between alleles $A_1$ and $A_2$ at $\ell_1$ and $\ell_2$ is
 \begin{align}
-  D_{j_1 j_2} = \cov[ X_1, X_2 ] = P_{j_1 j_2}(11) - P_{j_1}(1) P_{j_2}(1) ,
+  D_{\ell_1 \ell_2}(A_1,A_2) = P_{\ell_1 \ell_2}(A_1 A_2) - P_{\ell_1}(A_1) P_{\ell_2}(A_2) ,
 \end{align}
-where $P_{j_1 j_2}(11)$ is the empirical frequency of chromosomes that have the `1' allele at both sites $j_1$ and $j_2$,
-and $P_{j_1}(1)$ is similar.
-
-\begin{exercise}
-  Show that also
-  \[ D_{j_1 j_2} = P_{j_1 j_2}(11) P_{j_1 j_2}(00) - P_{j_1 j_2}(10) P_{j_1 j_2}(01) .  \]
-\end{exercise}
-
-What does $D_{j_1 j_2}$ have to say about the structure of the ancestral recombination graph?
-Intuitively, since it is a correlation between alleles at two loci on the same chromosome,
-it should be telling us about how much those loci tend to stick together (and thus have nonindependent).
-Fix some number of generations $t$.
-Either there has been a recombination between the two loci since that point or there has not;
-in the latter case, they are still on the same chromosome.
-Let $R_t=0$ if there has been no recombination, and $R_t=1$ otherwise.
-By the partition of covariance (\ref{lem:covariance}),
+where $P_{\ell_1 \ell_2}(11)$ is the empirical frequency of chromosomes that have the `1' allele at both sites $\ell_1$ and $\ell_2$,
+and $P_{\ell_1}(1)$ is similar.
+To measure association between the loci we sum over alleles and square, defining
 \begin{align}
-  \cov[X_1,X_2] &= \cov[ \E[X_1|R_t], \E[X_2|R_t] ] + \E[ \cov[X_1,X_2|R_t] ]  .
+  D_{\ell_1 \ell_2}^2 &= \left( \sum_{A_1,A_2} D_{\ell_1 \ell_2}(A_1,A_2) \right)^2 \\
+    &= \sum_{A_1,A_2} \left( P_{\ell_1 \ell_2}(A_1 A_2) - P_{\ell_1}(A_1) P_{\ell_2}(A_2) \right)^2
 \end{align}
-Assuming (as usual) that these alleles do not affect the pedigree,
-we can see that $\E[X_1|R_t] = \E[X_1]$, and likewise $\E[X_2|R_t] = \E[X_2]$,
-since recombinations do not affect the dynamics at single loci.
-Therefore, the first term $\cov[ \E[X_1|R_t], \E[X_2|R_t] ]$ is zero.
-Now note that $\P\{R_t=0\} = \exp(-tr)$, and so
+
+% Also,
+% \[
+% D_{\ell_1 \ell_2} = \cov[ \one_{X_1=A_1}, \one_{X_2=A_2} ]  .
+% \]
+
+Now assume that the loci are biallelic, coded as $\{0,1\}$
+(in which case $D_{\ell_1 \ell_2}^2  = 4 \left( P_{\ell_1 \ell_2}(1 1) - P_{\ell_1}(1) P_{\ell_2}(1) \right)^2$)
+and let $I$, $J$, $K$, and $L$ be the indices of individuals chosen uniformly at random with replacement.
+Now let $X_I$ be a randomly chosen allele at locus $\ell_1$ for $I$ (i.e.\ either $G_{I\ell_1m}$ or $G_{I\ell_1p}$),
+$Y_I$ be the same for locus $\ell_2$, on the same chromosome as $X_I$,
+and similarly for $J$, $K$, and $L$.
+Then
 \begin{align}
-  \cov[X_1,X_2] &= e^{-tr} \cov[X_1,X_2|R_t=0] + (1-e^{-tr}) \cov[X_1,X_2|R_t=1] .
+  D_{\ell_1 \ell_2}^2 = \P\{ X_I = X_J \& Y_I = Y_J \} - 2 \P\{ X_I = X_J \& Y_I = Y_K \} + \P\{ X_I = X_J \& Y_K = Y_L \} .
 \end{align}
-Ignore mutation (or take $t$ small enough it contributes little).
-Then, we have the covariance of the two alleles as a weighted sum of 
-the covariance between two alleles on the same chromosome,
-and the covariance between two alleles on different chromosomes,
-at a previous time $t$.
+(Note: this is an example of the more general idea of a ``distance covariance'', here between $X_I$ and $Y_I$.)
 
-
-
-This is as far as we can go in general
-If we are willing to make the assumption that alleles on different chromosomes
-
-
-\begin{lemma}{Partition of covariance} \label{lem:covariance}
-  For random variables $X$, $Y$, and $Z$, with $\E[X^2]$ and $\E[Y^2]$ finite,
-  \begin{itemize}
-    \item[(a)]
-    \[
-      \var[X] = \E[ \var[X|Z] ] + \var[ \E[X|Z] ]
-    \]
-    \item[(b)]
-    \[
-      \cov[X,Y] = \E[ \cov[X,Y|Z] ] + \cov[ \E[X|Z], \E[Y|Z] ] .
-    \]
-  \end{itemize}
-  where $\cov[X,Y|Z] := \E[XY|Z] - \E[X|Z]\E[Y|Z]$.
-\end{lemma}
-
-\begin{proof}
-This follows from the fact that $X,Y \mapsto \E[XY]$ is the inner product on $L^2(\P)$
-and the definition of conditional expectation with respect to $Z$ as the orthogonal projection
-onto the subspace of $Z$-measurable random variables.
-Specifically, $\E[X]$ is the projection of $X$ into the space of constant random variables (since $\E[ (X-\E[X]) c ] = 0$ for any constant $c$);
-and $\E[X|Z]-\E[X]$ is the projection of $X$ into the intersection of $Z$-measurable random variables and the orthogonal complement of constant random variables
-(since $\E[ f(Z) \E[X|Z] ] = \E[ f(Z) X ]$, by definition of conditional expectation).
-Therefore, $X = \E[X] + ( \E[X|Z] - \E[X] ) + ( X - \E[X|Z] )$
-is the decomposition of $X$ into three orthogonal subspaces;
-and we have a corresponding decomposition for $Y$,
-so by Pythagoras,
+These quantities are things that we can compute in terms of paths through the pedigree
+if we can assume that the appearance of mutations can be taken as independent of the pedigree.
+Let $\tau_1(I,J)$ be the number of generations back to the common ancestor of the chosen chromosomes of $I$ and $J$ at locus $\ell_1$,
+and similarly for $\tau_2(I,J)$ at locus $\ell_2$.
+Then under the infinite alleles model,
+with mutation rate $\mu$, 
 \begin{align}
-  \E[XY] &= \E[X]\E[Y] + \E[ (\E[X|Z] - \E[X])(\E[Y|Z] - \E[Y]) ] + \E[ (X - \E[X|Z])(Y - \E[Y|Z]) ]  \\
-  &= \E[X]\E[Y] + \cov[ \E[X|Z], \E[Y|Z] ] + \E[ \cov[X,Y|Z] ] ,
+  \P\{ X_I = X_J \& Y_K = Y_L \} &= \E[ \exp(-2\mu(\tau_1(I,J)+\tau_2(K,L))) ] .
 \end{align}
-since $\E[\E[X|Z]] = \E[X]$ and likewise for $Y$ and for $XY$.
-\end{proof}
+Similar equations for the other terms leads to
+\begin{align}
+  D_{\ell_1 \ell_2}^2 &= \E[ \exp(-\mu(\tau_1(I,J)+\tau_2(I,J))) ] - 2 \E[ \exp(-2\mu(\tau_1(I,J)+\tau_2(I,K))) ] + \E[ \exp(-2\mu(\tau_1(I,J)+\tau_2(K,L))) ] \\
+    &= \cov[ e^{-2\mu\tau_1(I,J)}, e^{-2\mu \tau_2(I,J)} ] - 2 \cov[ e^{-2\mu\tau_1(I,J)}, e^{-2\mu \tau_2(I,K)} ] + \cov[ e^{-2\mu\tau_1(I,J)}, e^{-2\mu \tau_2(K,L)} ] \\
+    &\approx 2\mu^2 \left( \cov[ \tau_1(I,J),  \tau_2(I,J) ] - 2 \cov[ \tau_1(I,J),  \tau_2(I,K) ] + \cov[ \tau_1(I,J),  \tau_2(K,L) ] \right) ,
+\end{align}
+where the latter approximation holds if the expected number of mutations per site ($\mu \tau$) is small.
 
 
+What does $D_{\ell_1 \ell_2}^2$ have to say about the structure of the ancestral recombination graph?
+Intuitively, since it is the squared correlation between alleles at two loci on the same chromosome,
+it should be telling us about how much those loci tend to stick together.
+This is reflected in the formula above, which interprets $D_{\ell_1 \ell_2}^2$
+in terms of covariances of times back to most recent common ancestors at the two sites.
 
+We can do a little more to make these covariances interpretable,
+in terms of the recombination distance between $\ell_1$ and $\ell_2$.
+For convenience, let $Z_1(I,J) = e^{-2\mu \tau_1(I,J)} - \E[e^{-2\mu \tau_1(I,J)}]$, etcetera.
+Again assuming independence of mutation and the pedigree,
+given $\tau_1(I,J)$,
+the probability that there was no recombination between the loci along the path between $I$ and $J$
+is $\exp(- 2r\tau_1(I,J))$;
+in this case, $\tau_1(I,J) = \tau_2(I,J)$.
+Suppose that in the complimentary case, when there was recombination, that $\tau_2$ is (conditionally) independent of $\tau_1$ --
+not true, but not too bad either.
+The correponding term in the formula for $D_{\ell_1 \ell_2}^2$ decays exponentially with $r$:
+\begin{align}
+  \cov[ e^{-2\mu\tau_1(I,J)}, e^{-2\mu \tau_2(I,J)} ] &= \E[ Z_1(I,J) Z_2(I,J) ]  \\
+        &\approx \E\left[ e^{-2r \tau_1(I,J)} Z_1(I,J)^2  \right] \\
+        &= \E\left[ e^{-2r \tau_1(I,J)} \left( e^{-2\mu \tau_1(I,J)} - \E[e^{-2\mu \tau_1(I,J)}] \right)^2 \right] .
+\end{align}
+
+Now take the second term.
+The most obvious way that the genealogy induces correlations between $\tau_1(I,J)$ and $\tau_2(I,K)$
+occurs if the most recent common ancestor of $I$ and $J$ is the same as that of $I$ and $K$,
+in which case $\tau_1(I,J) = \tau_1(I,K)$ (see figure \ref{fig:coal_time_correlation}A),
+and there is no recombination along the whole genealogy back to this MRCA.
+Define $\tau_1(I,J,K)$ to be the age of this MRCA.
+If we now assume that the case in which there was a recombination on the path from $I$ to $K$ contributes nothing to the covariance,
+since the probability that $I$ is in this position is $1/3$,
+\begin{align}
+  \E[ \exp(-2\mu(\tau_1(I,J)+\tau_2(I,K))) ] &= \E[ Z_1(I,J) Z_2(I,K) ] \\
+  &\approx \E \left[ e^{-2r \tau_1(I,J,K)} Z_1(I,J)^2 \vert \tau_1(I,J) = \tau_1(I,J,K)  \right] \\
+  &= \frac{1}{3} \E \left[ e^{-2r \tau_1(I,J,K)} \left( e^{-2\mu \tau_1(I,J,K)} - \E[e^{-2\mu \tau_1(I,J)}] \right)^2 \right] .
+\end{align}
+
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics{coal-time-correlation}
+  \end{center}
+  \caption{
+    \textbf{(A)} The tree topology in which the most recent common ancestor of $I$ and $J$ 
+    is the same as the most recent common ancestor of $I$ and $K$, so that $\tau(I,J) = \tau(I,K)$.
+    \textbf{(B)} Similar, but $\tau_{I,J} = \tau_{K,L}$ -- note that exchanging $K$ and $L$ would work as well.
+    \label{fig:coal_time_correlation}
+  }
+\end{figure}
+
+It should be clear what to do for the third term now.
+If the situation in figure \ref{fig:coal_time_correlation}B occurs (which it does with probability $1/6$)
+then $\tau_1(I,J) = \tau_1(K,L)$.
+As before,
+\begin{align}
+  \E[ \exp(-2\mu(\tau_1(I,J)+\tau_2(K,L))) ] &= \E[ Z_1(I,J) Z_2(K,L) ] \\
+  &\approx \E \left[ e^{-2r \tau_1(I,J,K,L)} Z_1(I,J)^2 \vert \tau_1(I,J) = \tau_1(I,J,K,L)  \right] \\
+  &= \frac{1}{6} \E \left[ e^{-2r \tau_1(I,J,K,L)} \left( e^{-2\mu \tau_1(I,J,K,L)} - \E[e^{-2\mu \tau_1(I,J)}] \right)^2 \right] .
+\end{align}
+
+Combining these gets us an approximate expression for $\E[D_{j_1 j_2}^2]$ 
+that is a tad unwieldy,
+but is in terms of ages of most recent common ancestors of two, three, and four samples:
+taking only terms first-order in $\mu$,
+and letting $t = \E[\tau_1(I,J)]$,
+\begin{align}
+  \E[ D_{j_1 j_2}^2 ] &\approx 4 \mu^2 \E\left[
+    e^{-2r \tau_1(I,J)} ( \tau_1(I,J) - t )^2 
+    - \frac{2}{3} e^{-2r \tau_1(I,J,K)} ( \tau_1(I,J,K) - t )^2 
+    + \frac{1}{6} e^{-2r \tau_1(I,J,K,L)} ( \tau_1(I,J,K,L) - t )^2 
+    \right] .
+\end{align}
 
 
 
 %%%%%%% %%%%%%%%
 \section{Mate choice: pedigrees}
 
-Now that we have a model for how to produce offspring from two parents,
-to model how genes move around in a population,
-we need a model for how mates are chosen.
-There are various models of ``random mating'',
-for instance:
+Now that we have some idea of what our data can tell us about the structure of the ancestral recombination graph,
+we will describe some simple population models --
+i.e.\ stochastic models of pedigrees.
+We will then compute expected values of the statistics under some of these models.
+
 
 \subsection{The diploid Moran model:}
 Continuous-time, fixed population size, overlapping generations.
@@ -467,7 +525,7 @@ independently in each meiosis.
 
 
 %%%%%%% %%%%%%%%
-\section*{Aside: The genome is not passive}
+\subsection*{Aside: The genome is not passive}
 
 Of course, the genes an individual carries can have quite a strong influence
 on their mate choice, number of offspring, and even on the outcome of recombination and segregation.
@@ -477,6 +535,29 @@ This makes things much more complicated,
 and we do our best to ignore it,
 for instance, by imagining we are tracking only segments of the genome not under selection,
 so that genetic variation in fitness only contributes to the distribution of offspring number.
+
+
+%%%%%%% %%%%%%%%
+\subsection{Diploid to haploid}
+
+The diploid mpodels above involve a lot of bookkeeping,
+that is done away with if we switch our focus from the individuals to the chromosomes.
+
+
+\paragraph{The haploid Moran model:}
+Continuous-time, fixed population size.
+In continuous time, each individual, at rate 1, 
+produces one offspring (through simple division)
+that replaces a randomly chosen individual (possibly the parent).
+
+\paragraph{The haploid Wright--Fisher model:}
+Discrete-time, varying population size.
+Suppose at time $t$ there is room for $N_t$ members of the population,
+which we take as a given trajectory.
+Each individual produces a Poisson number of offspring with large mean;
+of the total pool of offspring, a uniformly chosen set of $N_{t+1}$ of these
+are chosen to form the next generation.
+
 
 
 
@@ -498,26 +579,6 @@ If the locus is neutral
 then the average number of 
 
 \paragraph{Diploid Moran model:}
-
-
-%%%%%%% %%%%%%%%
-\section{Haploid models}
-
-Take each chromosome as an individual\ldots
-
-\paragraph{The haploid Moran model:}
-Continuous-time, fixed population size.
-In continuous time, each individual, at rate 1, 
-produces one offspring (through simple division)
-that replaces a randomly chosen individual (possibly the parent).
-
-\paragraph{The haploid Wright--Fisher model:}
-Discrete-time, varying population size.
-Suppose at time $t$ there is room for $N_t$ members of the population,
-which we take as a given trajectory.
-Each individual produces a Poisson number of offspring with large mean;
-of the total pool of offspring, a uniformly chosen set of $N_{t+1}$ of these
-are chosen to form the next generation.
 
 
 

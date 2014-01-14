@@ -1,13 +1,67 @@
-SOME ASPECTS OF COALESCENT THEORY
+INTRODUCTION TO COALESCENT THEORY
 =================================
 
 Spring 2014 -- Peter Ralph -- USC 
 
 
+Overview
+========
+
+This short course is aimed at people with some degree of familiarity with probability
+and stochastic processes (say, a first-year graduate course).
+At the end of each class I will assign a paper to read;
+everyone is expected to bring, written down, one or two questions or observations about the reading to the next class.
+The first hour to hour-and-a-quarter of each class will be lecture
+(interruptions and questions encouraged);
+and the remaining part of the class will be spent discussing the paper, 
+guided by the questions contributed by the class (and myself).
+The goal of this structure is to complement lecture
+with the sorts of learning we get by
+sorting through papers from the literature together,
+and trying to explain concepts to each other.
+
+I am aiming for the papers we read to complement the lectures:
+so, there will be things in the papers that we won't have talked about in class,
+and some things I talk about in class that won't appear in the papers.
+I am concurrently writing up lecture notes at [this github page](http://petrelharp.github.io/coaltheory/);
+comments (edits, pull requests, etc) are welcome.
+
+
+Expectations
+------------
+
+I expect everyone to turn in, at the start of each class, 
+a short (half page or less) of question and/or observation from the weekly discussion paper,
+due at the start of each class.
+At the end of my section of the course (on March 4th),
+I also expect a two-page writeup either summarizing further readings in the literature,
+or the results of simulating something we've learned about in class.
+An example of the first would be to read a few more papers on a particular topic,
+and write a summary of the main results, methods, and relationship to current practice.
+An example of the second would be to simulate a particular population process of interest,
+and compare the results to theory.
+I will provide suggestions for either, and am open to your ideas.
+
+
+Readings
+========
+
+1. (1/14) [Gene genealogies and the coalescent process](http://web.eve.ucdavis.edu/pbg298/pdfs/Hudson_OxfordSurveysEvolBiol_1991.pdf), Hudson, 1990.  
+  This is a review paper, which doesn't give many details, but is a very useful overview.
+2. (1/21) [Gene genealogies within a fixed pedigree, and the robustness of Kingman's coalescent.](http://www.ncbi.nlm.nih.gov/pubmed/22234858), by Wakeley, King, Low, and Ramachandran.  This paper examines the effect of correlations due to a fixed pedigree that dissappear in the large-population limit underlying most theoretical results (using a real-life pedigree!).
+3. (1/28) [Junctions in inbreeding](http://www.ncbi.nlm.nih.gov/pubmed/13142314), Bennett, 1953 (ask me for pdf); or [A fuller theory of "Junctions" in inbreeding](http://dx.doi.org/10.1038/hdy.1954.17), by Fisher 1954.
+4. (2/4)
+5. (2/11)
+6. (2/18)
+7. (2/25)
+8. (3/4)
+
+
+
 Outline
 =======
 
-1. Pedigrees and inheritance, and statistics of the realized ARG
+1. Pedigrees and inheritance, and statistics of the realized ancestral recombination graph (ARG)
   * modeling recombination, segregation, and mutation
   * the ARG: embedding of recombination into the pedigree 
   * single-site statistics
@@ -47,42 +101,29 @@ Outline
 
 
 
-Readings
-========
 
-- Coalescent Theory, (book), Wakeley
-- something by Möhle
-- [Gene genealogies and the coalescent process](http://web.eve.ucdavis.edu/pbg298/pdfs/Hudson_OxfordSurveysEvolBiol_1991.pdf), Hudson, 1990.
+
+Further readings
+================
+
+- [The population genealogy of the infinitely-many neutral alleles model](http://www.cmb.usc.edu/people/stavare/STpapers-pdf/DT87a.pdf), Donnelly \& Tavar\'e, 1987.
 - [An Ancestral Recombination Graph](http://www.math.canterbury.ac.nz/~r.sainudiin/recomb/ima.pdf), by Griffiths and Marjoram, 1997.
 - [An Ancestral Recombination Graph for Diploid Populations with Skewed Offspring Distribution](http://www.genetics.org/content/193/1/255.abstract), by Birkner, Blath, and Eldon, Genetics 2013
-- [Gene genealogies within a fixed pedigree, and the robustness of Kingman's coalescent.](http://www.ncbi.nlm.nih.gov/pubmed/22234858), by Wakeley, King, Low, and Ramachandran.
 - [Coalescent Processes When the Distribution of Offspring Number Among Individuals Is Highly Skewed](http://www.genetics.org/content/172/4/2621.full), by Eldon and Wakeley, 2006.
-- [A fuller theory of "Junctions" in inbreeding](http://dx.doi.org/10.1038/hdy.1954.17), by Fisher 1954.
 - [Distribution of Parental Genome Blocks in Recombinant Inbred Lines](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3189807/), by Martin and Hospital, 2011.
+- [A Genealogical Interpretation of Linkage Disequilibrium](), by McVean, 2002.
+- something by Möhle
+- PSMC method, Li and Durbin
+- Kelley's paper
 
 
-Assignments
-===========
 
-Simulate something from the course, with write-up of methods and results, including code and graphs (submit via git)
-
-
-Ambitious suggestions:
-------------
-
-+ Simulate with a "long-tailed" offspring distribution -- verify convergence to a Beta-coalescent, and investigate the transition between Kingman's and the Beta coalescent, perhaps as the upper bound on the possible number of offspring is increased.
-
-+ Investigate empirical distribution within a fixed pedigree -- how much variation in coalescent time distributions are there between instantiations of recombination and segregation in a fixed pedigree?  Between pedigrees?
-  see [Gene genealogies within a fixed pedigree, and the robustness of Kingman's coalescent.](http://www.ncbi.nlm.nih.gov/pubmed/22234858), by Wakeley, King, Low, and Ramachandran.
-
-+ Investigate the bulk ("law of large numbers") behavior of a large number of lineages in a pedigree -- for instance, are the number of lineages present well-described by the deterministic (mean-value) equations?
-
-
-Ideas
------
+Further topics to possibly cover:
+================
 
 - recursions for identity by descent
 - mean IBD block length spectrum
 - dual processes within a given pedigree
-- PSMC
+- PSMC (Li \& Durbin)
+- ABBA/BABA etc
 - long-tailed, beta coalescents

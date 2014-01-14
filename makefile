@@ -37,7 +37,8 @@ clean :
 $(DISPLAYDIR)/%.pdf : %.tex
 	rm -f texput.*
 	( cat header.tex; echo '\input{$<}'; cat tailer.tex ) | pdflatex
-	bibtex texput.aux
+	-bibtex texput
+	( cat header.tex; echo '\input{$<}'; cat tailer.tex ) | pdflatex
 	( cat header.tex; echo '\input{$<}'; cat tailer.tex ) | pdflatex
 	mv texput.pdf $@
 
@@ -45,7 +46,7 @@ $(DISPLAYDIR)/%.pdf : %.tex
 # automatically figure out which things to tex up
 # remove intermediate .xml and .pdf files
 
-display/introduction.pdf : IBD-sequence-diagram.pdf frequency-spectra-trees.pdf
+display/introduction.pdf : IBD-sequence-diagram.pdf frequency-spectra-trees.pdf coal-time-correlation.pdf
 
 publish : $(WEBPAGES) clean
 
