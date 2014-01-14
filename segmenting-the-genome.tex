@@ -1,0 +1,81 @@
+
+
+
+
+%%%%%%% %%%%%%%%
+\section{Segmenting the genome}
+
+It is possible to compute higher moments -- i.e.\ LD-like statistics across arbitrarily many loci.
+For some purposes, it is useful to take a wider view.
+Focus for the moment on just two sampled chromosomes.
+At any position $x$ along the genome, these two share a common ancestor at some point back in time --
+denote the ancestor $A_x$ and the number of generations $\tau_x$.
+The entire chromosome, identified with $[0,G)$,
+can be then partitioned into the contiguous chunks inherited from distinct ancestors.
+More concretely, define $0 = X_0 < X_1 < \cdots < X_{N_R} < L$ as the points along the chromosome 
+separating segments that were inherited along distinct paths.
+(These could almost be defined as points $x$ such that $A_{x-} \neq A_x$,
+but for the possibility of inheriting adjacent segments along more than one path from the same ancestor.)
+Define $A_k$ and $\tau_k$ to be the ancestor and coalescent time for the segment $[X_{k-1},X_k)$, for each $1 \le k \le N_R$.
+The break points $X$ and associated statistics are essentially unobservable,
+but turn out to be very useful anyhow.
+
+Now imagine walking along a chromosome from one end to the other, beginning with the TMRCA $\tau_0$ at the end of the chromosome.
+As is made formal below,
+the distance we have to go before $X_1$ is Exponential with rate $\tau_0$,
+and $R_1$, the time back to the recombination that switched us from one path through the pedigree to another is uniform on $[0,\tau_0]$.
+% NOTE not quite right since it could fall on either path back to the ancestor which could be different lengths
+The distribution of $\tau_1$ depends on $\tau_0$ and on $R_1$ but not on $X_1$.
+Similarly, the $X_2-X_1$ and $R_2$ are conditionally independent of each other and everything else so far given $\tau_1$,
+but then $\tau_2$ depends on $\tau_0$, $\tau_1$, $R_1$, and $R_2$.
+The entire sequence along a chromosome of length $G$ can be generated
+by first sampling an infinite sequence $\tau_0,\tau_1,\tau_2,\ldots$,
+then sampling $L_1', L_2', \ldots$ to be independent Exponentials with $\E[L_k] = 1/\tau_k$,
+defining $N = \min \{n : \sum_{k =1}^n L_k' \ge G \}$,
+then letting $L_k = L_k'$ for $1 \le k < N$ and $L_N = G - \sum_{k =1}^N L_k'$.
+The sequence $\tau$ is stationary
+and with the property that $(\tau_1, \tau_2, \ldots, \tau_n) \deq  (\tau_n, \tau_{n-1}, \ldots, \tau_1)$ for each $n$.
+
+
+\begin{figure}[ht!]
+  \begin{center}
+    \includegraphics[width=\textwidth]{IBD-sequence-diagram}
+  \end{center}
+  \caption{
+  Sequnce of coalescent times $\tau$, recombination times $R$, and IBD lengths $L$ along a chromosome.
+  }
+\end{figure}
+
+\begin{lemma}{Joint distribution of neighboring shared segments}
+  \begin{enumerate}
+      
+    \item[(a)] Conditioned on $X_{k-1}$ and $\tau_{k}$, the length $X_k-X_{k-1}$ has the same distribution as $\max\{Z/\tau_k,G-X_{k-1}\}$,
+      where $Z$ is an independent Exponential random variable with mean 1,
+      and the time $R_k$ has a uniform distribution on $[0,\tau_k]$, independent of $X_k-X_{k-1}$.
+
+    \item[(b)] Let $(X_-,R_-)$ and $(X_+,R_+)$ be the locations and recombination times of the closest events
+      to the left and right of $x$, respectively.
+      Let $Z_-$ and $Z_+$ be independent Exponential random variables with mean 1.
+      Conditioned on $\tau_x$, all four are jointly independent,
+      with $X_- \deq \max\{ x-Z_-, 0 \}$ and $X_- \deq \min\{ x+Z_+, G \}$;
+      and $R_-$ and $R_+$ uniform on $[0,\tau_x]$.
+
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+
+  \textbf{(b)} The probability that there were no crossovers in the segment $[x,x+y)$ in any of the $2\tau_x$ meioses on the path back to $A_x$
+  is, by definition, $\exp(-x \tau_x)$ -- and hence, the distance along the chromosome to the next recombination event that causes a switch is exponential with rate $\tau_x$,
+  and the first such recombination event is uniformly distributed across the possible meioses,
+  by properties of competing Poisson processes.
+
+  Part (a) follows from (b) by conditioning on $X_- = x$.
+
+\end{proof}
+
+\begin{lemma}{The sequence of coalescent times determines the distribution of IBD lengths.}
+  Conditioned on $(\tau_1, \ldots, \tau_{N_R})$,  XXX
+\end{lemma}
+
+

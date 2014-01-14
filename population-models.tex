@@ -1,0 +1,79 @@
+
+
+%%%%%%% %%%%%%%%
+\section{Mate choice: pedigrees}
+
+Now that we have some idea of what our data can tell us about the structure of the ancestral recombination graph,
+we will describe some simple population models --
+i.e.\ stochastic models of pedigrees.
+We will then compute expected values of the statistics under some of these models.
+
+
+\subsection{The diploid Moran model:}
+Continuous-time, fixed population size, overlapping generations.
+In continuous time, each individual, at rate 1, chooses another uniformly at random
+with whom to mate;
+they produce one offspring
+that replaces a randomly chosen individual (possibly including the parents).
+
+\subsection{The diploid Cannings model:}
+Discrete time, varying population size, nonoverlapping generations.
+Suppose at time $t$ there are $N_t$ members of the population,
+which we take as a given trajectory.
+Each pair of individuals could potentially produce some offspring;
+let $X_{ij}$ denote the number produced in this event by pair $(i,j)$ with $i$ as the mother and $j$ as the father for each $1 \le i,j \le N_{t}$.
+Suppose that the $X_{ij}$ are \emph{exchangeable},
+i.e.\ that $(X_{ij})_{i,j=1}^{N_{t}} \deq (X_{\pi(i)\pi(j)})_{i,j=1}^{N_{t}}$ for any permutation $\pi$ of $(1,2,\ldots,N_{t})$,
+and that $\sum_{ij} X_{ij} = N_{t+1}$.
+Note that the organisms could be hermaphrodite or unisexual,
+as long as we assume that sex determination is independent of siblingship,
+and so effectively make sex determination the first step of reproduction.
+
+
+Each of these produces a \emph{random pedigree}, 
+i.e.\ a directed graph with nodes indexed by $(t,k)$, for $1 \le k \le N_t$
+and two types of edges, corresponding to maternal versus paternal relationships.
+Each arrow represents one meiosis, i.e.\ the result of recombination and segration to produce a gamete.
+If we can assume that genetic material does not affect mate choice,
+then a model for a population can first choose a random pedigree,
+then determine genetic relatedness by making the choices of recombination and segregation
+independently in each meiosis.
+
+
+
+%%%%%%% %%%%%%%%
+\subsection*{Aside: The genome is not passive}
+
+Of course, the genes an individual carries can have quite a strong influence
+on their mate choice, number of offspring, and even on the outcome of recombination and segregation.
+In particular, once we know the genomes of every individual, the Cannings model makes no sense,
+since individuals are clearly not exchangeable.
+This makes things much more complicated,
+and we do our best to ignore it,
+for instance, by imagining we are tracking only segments of the genome not under selection,
+so that genetic variation in fitness only contributes to the distribution of offspring number.
+
+
+%%%%%%% %%%%%%%%
+\subsection{Diploid to haploid}
+
+The diploid mpodels above involve a lot of bookkeeping,
+that is done away with if we switch our focus from the individuals to the chromosomes.
+
+
+\paragraph{The haploid Moran model:}
+Continuous-time, fixed population size.
+In continuous time, each individual, at rate 1, 
+produces one offspring (through simple division)
+that replaces a randomly chosen individual (possibly the parent).
+
+\paragraph{The haploid Wright--Fisher model:}
+Discrete-time, varying population size.
+Suppose at time $t$ there is room for $N_t$ members of the population,
+which we take as a given trajectory.
+Each individual produces a Poisson number of offspring with large mean;
+of the total pool of offspring, a uniformly chosen set of $N_{t+1}$ of these
+are chosen to form the next generation.
+
+
+
