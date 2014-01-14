@@ -2,4 +2,4 @@
 #  (and any other commands you want run in the makefile in the gh-pages branch before making the (x)html)
 
 MDS = outline.md
-TEXS = introduction.tex
+TEXS = introduction.tex summary-stats.tex

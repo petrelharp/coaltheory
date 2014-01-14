@@ -3,6 +3,10 @@
 # (REMOVE FILES LYING AROUND NOW)
 # cp directory-to-gh-pages-stuff/* .
 # git add (STUFF JUST ADDED)
+#
+#
+
+.PHONY : clean publish pdfs
 
 ###
 # names of files you want made and published to github (in gh-pages) should be in html-these-files.mk
@@ -16,7 +20,11 @@ WEBPAGES = $(MD_HTML) $(TEX_HTML) $(TEX_XHTML)
 # put pdfs, htmls, in this directory
 DISPLAYDIR = display
 
-.PHONY : clean publish
+PDFS = $(patsubst %.tex,$(DISPLAYDIR)/%.pdf,$(TEXS))
+
+pdfs :
+	make $(PDFS)
+
 
 # publish web pages to gh-pages
 publish : 
@@ -46,7 +54,12 @@ $(DISPLAYDIR)/%.pdf : %.tex
 # automatically figure out which things to tex up
 # remove intermediate .xml and .pdf files
 
-display/introduction.pdf : IBD-sequence-diagram.pdf frequency-spectra-trees.pdf coal-time-correlation.pdf
+$(DISPLAYDIR)/introduction.pdf : pedigree-ibd-recombination.pdf
+
+$(DISPLAYDIR)/segmenting-the-genome.pdf : IBD-sequence-diagram.pdf
+
+$(DISPLAYDIR)/summary-stats.pdf : frequency-spectra-trees.pdf coal-time-correlation.pdf
+
 
 publish : $(WEBPAGES) clean
 
@@ -56,19 +69,19 @@ publish : $(WEBPAGES) clean
 # %.tex : clean
 # 	git show master:$@ > $@
 
-%.html : %.md
+$(DISPLAYDIR)/%.html : %.md
 	pandoc -c github-markdown.css -f markdown_github -o $@ $<
 
-%.html : %.tex
+$(DISPLAYDIR)/%.html : %.tex
 	rm -f LaTeXML.cache
-	latexmlc --format=html5 --javascript=LaTeXML-maybeMathjax.js --css=plr-style.css --stylesheet=xsl/LaTeXML-all-xhtml.xsl --javascript=adjust-svg.js --destination=$@ $<
+	( cat header.tex; echo '\input{$<}'; cat tailer.tex ) | latexmlc --format=html5 --javascript=LaTeXML-maybeMathjax.js --css=plr-style.css --stylesheet=xsl/LaTeXML-all-xhtml.xsl --javascript=adjust-svg.js --destination=$@ -
 
-%.xhtml : %.xml
+$(DISPLAYDIR)/%.xhtml : $(DISPLAYDIR)/%.xml
 	latexmlpost --css=plr-style.css --javascript=LaTeXML-maybeMathjax.js --javascript=adjust-svg.js --stylesheet=xsl/LaTeXML-all-xhtml.xsl --destination=$@ $<
 
-%.xml : %.tex
+$(DISPLAYDIR)/%.xml : %.tex
 	rm -f LaTeXML.cache
-	latexml --destination=$@ $<
+	( cat header.tex; echo '\input{$<}'; cat tailer.tex ) | latexml --destination=$@ -
 
 %.pdf : %.ink.svg
 	inkscape $< --export-pdf=$@
