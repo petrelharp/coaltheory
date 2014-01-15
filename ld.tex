@@ -1,0 +1,22 @@
+\section{LD}
+
+For loci $i$ and $j$, with alleles $A_i$ and $A_j$, 
+and a set of genotypes $G$ with $X$ randomly chosen from $G$,
+define
+\begin{align}
+    D_{ij}(A_i,A_j) &= \P\{ G_i = A_i \& G_j = A_j \} - \P\{ G_i = A_i \} \P\{ G_j = A_j \} \\
+        &= \cov[ \one_{G_i=A_i}, \one_{G_j=A_j} ] \\
+        &= \P\{ G_i = A_i \} \left( \P\{ G_j = A_j \vert G_i = A_i \} - \P\{ G_j = A_j \}  \right) \\
+    D_{ij} &= \sum_{A_i} \sum_{A_j} D_{ij}(A_i,A_j) .
+\end{align}
+Note that by using the third equality, for $j \neq k$
+\begin{align}
+    \sum_{A_j} D_{ij}(A_i,A_j) = 0 ,
+\end{align}
+and hence
+\begin{align}
+    D_{ij}^2 = \sum_{A_i} \sum_{A_j}  D_{ij}(A_i,A_j)^2 .
+\end{align}
+
+Note that $\E[D_{ij}^2]$ is the squared \emph{distance covariance} between the allele at $i$ and the allele at $j$,
+which implies in particular that it is zero iff they are independent.
