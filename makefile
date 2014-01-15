@@ -60,7 +60,6 @@ $(DISPLAYDIR)/segmenting-the-genome.pdf : IBD-sequence-diagram.pdf
 
 $(DISPLAYDIR)/summary-stats.pdf : frequency-spectra-trees.pdf coal-time-correlation.pdf
 
-
 publish : $(WEBPAGES) clean
 
 # %.md : clean
