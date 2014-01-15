@@ -110,5 +110,6 @@ Further topics to possibly cover:
 - mean IBD block length spectrum
 - dual processes within a given pedigree
 - PSMC (Li \& Durbin)
+- f-statistics
 - ABBA/BABA etc
 - long-tailed, beta coalescents
