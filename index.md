@@ -5,6 +5,15 @@ Spring 2014 -- Peter Ralph -- USC
 http://petrelharp.github.io/coaltheory/outline.html
 
 
+Notes
+=====
+
+Here are links to web pages of notes that roughly follow the course.  They are xhtml, with svg figures, so they might not work in IE; get firefox or opera if you have troubles. Or, download the source from [my github repository](https://github.com/petrelharp/coaltheory) and build whatever you want from the latex.
+
+1. [Introduction](introduction.xhtml)
+2. [Summary statistics (of the realized ancestral recombination graph)](summary-stats.xhtml)
+
+
 Overview
 ========
 
@@ -34,46 +43,46 @@ Readings
 
 
 
-Outline
+Outline (tentative)
 =======
 
 1. Pedigrees and inheritance, and statistics of the realized ancestral recombination graph (ARG)
- * modeling recombination, segregation, and mutation
- * the ARG: embedding of recombination into the pedigree 
- * single-site statistics
-  + heterozygosity
-  + Fst
-  + coalescent time distribution
-  + site frequency spectrum
- * multiple-site statistics
-  + linkage disequilibrium
-  + haplotype blocks  
+    * modeling recombination, segregation, and mutation
+    * the ARG: embedding of recombination into the pedigree 
+    * single-site statistics
+        + heterozygosity
+        + Fst
+        + coalescent time distribution
+        + site frequency spectrum
+    * multiple-site statistics
+        + linkage disequilibrium
+        + haplotype blocks  
 2. Population models of pedigrees and lineages
-  * Moran models
-    + haploid
-    + diploid
-  * Cannings models
-  * Lambda coalescents
+    * Moran models
+        + haploid
+        + diploid
+    * Cannings models
+    * Lambda coalescents
 3. Expected values under population models
-  * allele frequencies
-    + forwards and reverse processes
-    + limiting, continuous process
-  * single-site statistics
-    + heterozygosity and LD and "effective population size"
-    + Ewens sampling/site frequency spectrum from mean time in tree
-  * distinction between population distribution and (annealed) expectation
+    * allele frequencies
+        + forwards and reverse processes
+        + limiting, continuous process
+    * single-site statistics
+        + heterozygosity and LD and "effective population size"
+        + Ewens sampling/site frequency spectrum from mean time in tree
+    * distinction between population distribution and (annealed) expectation
 4. Recombination, and blocks
-  * decomposition of a sampled set into minimal collection of IBD blocks
-  * distribution of age of MRCA of a site is the size-biased version of age of MRCA of a block
-  * mean block length spectrum a function of coalescent time distribution
+    * decomposition of a sampled set into minimal collection of IBD blocks
+    * distribution of age of MRCA of a site is the size-biased version of age of MRCA of a block
+    * mean block length spectrum a function of coalescent time distribution
 5. Junctions and multiply shared blocks
-  * junctions are inherited as Mendelian alleles
-  * expected number of genome-wide k-way shared recent blocks
-  * parallel to rare variants
+    * junctions are inherited as Mendelian alleles
+    * expected number of genome-wide k-way shared recent blocks
+    * parallel to rare variants
 6. Bulk coalescent theory
-  * law of large numbers for lineages
-  * single-lineage relationship to many lineages
-  * distribution of longest shared block
+    * law of large numbers for lineages
+    * single-lineage relationship to many lineages
+    * distribution of longest shared block
 
 
 
