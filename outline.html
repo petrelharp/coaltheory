@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="github-markdown.css" type="text/css" />
+</head>
+<body>
+<h1 id="introduction-to-coalescent-theory">INTRODUCTION TO COALESCENT THEORY</h1>
+<p>Spring 2014 -- Peter Ralph -- USC<br /><a href="http://petrelharp.github.io/coaltheory/outline.html">http://petrelharp.github.io/coaltheory/outline.html</a></p>
+<h1 id="overview">Overview</h1>
+<p>This short course is aimed at people with some degree of familiarity with probability and stochastic processes (say, a first-year graduate course). At the end of each class I will assign a paper to read; everyone is expected to bring, written down, one or two questions or observations about the reading to the next class. The first hour to hour-and-a-quarter of each class will be lecture (interruptions and questions encouraged); and the remaining part of the class will be spent discussing the paper, guided by the questions contributed by the class (and myself). The goal of this structure is to complement lecture with the sorts of learning we get by sorting through papers from the literature together, and trying to explain concepts to each other.</p>
+<p>I am aiming for the papers we read to complement the lectures: so, there will be things in the papers that we won't have talked about in class, and some things I talk about in class that won't appear in the papers. I am concurrently writing up lecture notes at <a href="http://petrelharp.github.io/coaltheory/">http://petrelharp.github.io/coaltheory/</a> ; comments (edits, pull requests, etc) are welcome.</p>
+<h2 id="expectations">Expectations</h2>
+<p>I expect everyone to turn in, at the start of each class, a short (half page or less) of question and/or observation from the weekly discussion paper, due at the start of each class. At the end of my section of the course (on March 4th), I also expect a two-page writeup either summarizing further readings in the literature, or the results of simulating something we've learned about in class. An example of the first would be to read a few more papers on a particular topic, and write a summary of the main results, methods, and relationship to current practice. An example of the second would be to simulate a particular population process of interest, and compare the results to theory. I will provide suggestions for either, and am open to your ideas.</p>
+<h1 id="readings">Readings</h1>
+<ol>
+<li>(1/14) <a href="http://web.eve.ucdavis.edu/pbg298/pdfs/Hudson_OxfordSurveysEvolBiol_1991.pdf">Gene genealogies and the coalescent process</a>, Hudson, 1990.<br /> This is a review paper, which doesn't give many details, but is a very useful overview.<br /></li>
+<li>(1/21) <a href="http://www.ncbi.nlm.nih.gov/pubmed/22234858">Gene genealogies within a fixed pedigree, and the robustness of Kingman's coalescent.</a>, by Wakeley, King, Low, and Ramachandran. This paper examines the effect of correlations due to a fixed pedigree that dissappear in the large-population limit underlying most theoretical results (using a real-life pedigree!).<br /></li>
+<li>(1/28)<br /></li>
+<li>(2/4)<br /></li>
+<li>(2/11)<br /></li>
+<li>(2/18)<br /></li>
+<li>(2/25)<br /></li>
+<li>(3/4)</li>
+</ol>
+<h1 id="outline">Outline</h1>
+<ol>
+<li>Pedigrees and inheritance, and statistics of the realized ancestral recombination graph (ARG)<br /></li>
+</ol>
+<ul>
+<li>modeling recombination, segregation, and mutation<br /></li>
+<li>the ARG: embedding of recombination into the pedigree<br /></li>
+<li>single-site statistics<br /></li>
+<li>heterozygosity<br /></li>
+<li>Fst<br /></li>
+<li>coalescent time distribution<br /></li>
+<li>site frequency spectrum<br /></li>
+<li>multiple-site statistics<br /></li>
+<li>linkage disequilibrium<br /></li>
+<li>haplotype blocks<br /></li>
+</ul>
+<ol>
+<li>Population models of pedigrees and lineages<br /></li>
+</ol>
+<ul>
+<li><p>Moran models</p>
+<ul>
+<li>haploid<br /></li>
+<li>diploid<br /></li>
+</ul></li>
+<li>Cannings models<br /></li>
+<li>Lambda coalescents<br /></li>
+</ul>
+<ol>
+<li>Expected values under population models<br /></li>
+</ol>
+<ul>
+<li><p>allele frequencies</p>
+<ul>
+<li>forwards and reverse processes<br /></li>
+<li>limiting, continuous process<br /></li>
+</ul></li>
+<li><p>single-site statistics</p>
+<ul>
+<li>heterozygosity and LD and &quot;effective population size&quot;<br /></li>
+<li>Ewens sampling/site frequency spectrum from mean time in tree<br /></li>
+</ul></li>
+<li>distinction between population distribution and (annealed) expectation<br /></li>
+</ul>
+<ol>
+<li>Recombination, and blocks<br /></li>
+</ol>
+<ul>
+<li>decomposition of a sampled set into minimal collection of IBD blocks<br /></li>
+<li>distribution of age of MRCA of a site is the size-biased version of age of MRCA of a block<br /></li>
+<li>mean block length spectrum a function of coalescent time distribution<br /></li>
+</ul>
+<ol>
+<li>Junctions and multiply shared blocks<br /></li>
+</ol>
+<ul>
+<li>junctions are inherited as Mendelian alleles<br /></li>
+<li>expected number of genome-wide k-way shared recent blocks<br /></li>
+<li>parallel to rare variants<br /></li>
+</ul>
+<ol>
+<li>Bulk coalescent theory<br /></li>
+</ol>
+<ul>
+<li>law of large numbers for lineages<br /></li>
+<li>single-lineage relationship to many lineages<br /></li>
+<li>distribution of longest shared block</li>
+</ul>
+<h1 id="further-readings">Further readings</h1>
+<ul>
+<li><a href="http://www.cmb.usc.edu/people/stavare/STpapers-pdf/DT87a.pdf">The population genealogy of the infinitely-many neutral alleles model</a>, Donnelly \&amp; Tavar\'e, 1987.<br /></li>
+<li><a href="http://www.math.canterbury.ac.nz/~r.sainudiin/recomb/ima.pdf">An Ancestral Recombination Graph</a>, by Griffiths and Marjoram, 1997.<br /></li>
+<li><a href="http://www.genetics.org/content/193/1/255.abstract">An Ancestral Recombination Graph for Diploid Populations with Skewed Offspring Distribution</a>, by Birkner, Blath, and Eldon, Genetics 2013<br /></li>
+<li><a href="http://www.genetics.org/content/172/4/2621.full">Coalescent Processes When the Distribution of Offspring Number Among Individuals Is Highly Skewed</a>, by Eldon and Wakeley, 2006.<br /></li>
+<li><a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3189807/">Distribution of Parental Genome Blocks in Recombinant Inbred Lines</a>, by Martin and Hospital, 2011.<br /></li>
+<li><a href="">A Genealogical Interpretation of Linkage Disequilibrium</a>, by McVean, 2002.<br /></li>
+<li>something by Möhle<br /></li>
+<li>PSMC method, Li and Durbin<br /></li>
+<li>Kelley's paper</li>
+</ul>
+<h1 id="further-topics-to-possibly-cover">Further topics to possibly cover:</h1>
+<ul>
+<li>recursions for identity by descent<br /></li>
+<li>mean IBD block length spectrum<br /></li>
+<li>dual processes within a given pedigree<br /></li>
+<li>PSMC (Li \&amp; Durbin)<br /></li>
+<li>ABBA/BABA etc<br /></li>
+<li>long-tailed, beta coalescents</li>
+</ul>
+</body>
+</html>
