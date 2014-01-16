@@ -25,12 +25,12 @@ as estimated from real data, where assumptions such as random mating are rarely 
 
 Some other discussions that take this point of view to at least some degree are:
 \citet{mcvean2002linkage}, OTHERS.
-The textbook ``Tree Thinking'' XXX ALSO XXX ?
-Other good references for population genetics are
+% The textbook ``Tree Thinking'' XXX ALSO XXX ?
+Other good references for coalescent theory are
 \citet{hudson1990gene} (a nice article-length review), 
 and the books
 \citet{wakeley2005coalescent} (fairly gentle)
-and \citet{ewens2004mathematical} (fairly mathematical).
+and \citet{ewens2004mathematical} (fairly mathematical, and covers more general population genetics).
 
 
 %%%%%%% %%%%%%%%
@@ -145,6 +145,57 @@ Each gene tree follows a path through the links of the pedigree,
 and if due to recombination during one of the meioses, 
 loci $x$ and $y$ are inherited from different parental chromosomes,
 the marginal gene trees at $x$ and $y$ will differ.
+
+
+%%%%%%% %%%%%%%%%
+\subsection{Formalities}
+
+Now, a formal definition for the so far obvious-yet-vague ``ancestral recombination graph''.
+This records all relationships between both chromsomes of all individuals that ever lived in the population:
+so, let $\chrom_t$ denote those chromosomes that were alive at time $t$,
+and let $\chrom = \bigcup_t \chrom_t$ denote all chromosomes in our universe,
+These are furthermore grouped together into individuals:
+$\indiv_t$ is a partition of $\chrom_t$ into pairs, and likewise $\indiv$ is a partition of $\chrom$ into pairs.
+The relationships occur if two chromosomes in a diploid cell undergo recombination and meiosis,
+producing one chromosome for an offspring.
+So, if $(c_m,c_p)$ is a pair of chromosomes in $\indiv_t$,
+and they recombine at locations $r=(r_1,r_2,\ldots,r_k)$
+to produce chromsome $c$,
+then we say that the meiosis $(c,c_m,c_p,r)$ has occurred.
+As a matter of convention, say that $c$ has inherited from $c_m$ 
+on odd intervals $[0,r_1)$, $[r_2,r_3)$, etcetera,
+and has inherited from $c_p$ from the remaining intervals,
+and that $0 \le r_1 < r_2 < \cdots < r_k = G$, where $G$ is the length of the chromosome.
+Let $\meioses_t$ be the meioses occurring at $t$,
+and $\meioses = \bigcup_t \meioses_t$.
+To reiterate, if $(c,c_m,c_p,r) \in \meioses_t$, then
+$c$ must be in an individual birthed at $t$ from living parents; 
+i.e.\ $c \in \chrom_t$ but $c \notin \chrom_s$ for any $s<t$;
+and $(c_m,c_p) \in indiv_t$.
+
+Note that it is natural to identify each chromosome with the meiosis that produced it.
+
+All the information required to construct the population pedigree
+(who was whose parents) is contained in $\meioses$;
+also, the gene tree at each location along the genome.
+
+For instance, let $T_x$ be the gene tree for a set of samples at position $x$ along the genome.
+This is the minimal acyclical graph (a tree) whose nodes are chromosomes (or, equivalently, meioses), 
+that contains the sampled chromosomes,
+and if a chromosome $c$ is in $T_x$, then so is the parent of $c$ at which $c$ has inherited at $x$.
+These trees change whenever a breakpoint is encountered in any of the constituent meioses:
+Formally, define $R(c)$ to be the set of recombination breakpoints of the meiosis that created $c$;
+then the next point to the right of $x$ at which the tree changes is:
+\begin{align}
+  \inf\{ y > x \st T_y \neq T_x \} = \inf\{ z \st z > x \; \text{and} \; z \in \bigcup_{c\in T_x} R(c) \} .
+\end{align}
+
+
+This notation, so far, describes the facts:
+actual relationships that have already occurred in a population;
+many of which may be unobservable.
+To make inferences, we will need to put models of certain of these processes:
+on mutation, recombination, mate choice, and/or offspring number.
 
 
 %%%%%%% %%%%%%%%%%%%

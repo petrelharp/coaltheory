@@ -21,10 +21,13 @@ WEBPAGES = $(MD_HTML) $(TEX_HTML) $(TEX_XHTML)
 DISPLAYDIR = display
 
 PDFS = $(patsubst %.tex,$(DISPLAYDIR)/%.pdf,$(TEXS))
+XHTMLS = $(patsubst %.tex,$(DISPLAYDIR)/%.xhtml,$(TEXS))
+
+xhtmls :
+	make $(XHTMLS)
 
 pdfs :
 	make $(PDFS)
-
 
 # publish web pages to gh-pages
 publish : 
@@ -68,25 +71,34 @@ publish : $(WEBPAGES) clean
 # %.tex : clean
 # 	git show master:$@ > $@
 
+$(DISPLAYDIR)/coaltheory.xml : coaltheory.bib
+	latexml --destination=$@ --bibtex $<
+
 $(DISPLAYDIR)/%.html : %.md
-	pandoc -c github-markdown.css -f markdown_github -o $@ $<
+	pandoc -c latexmliness/github-markdown.css -f markdown_github -o $@ $<
 
-$(DISPLAYDIR)/%.html : %.tex
+$(DISPLAYDIR)/%.html : %.tex $(DISPLAYDIR)/coaltheory.xml
 	rm -f LaTeXML.cache
-	( cat header.tex; echo '\input{$<}'; cat tailer.tex ) | latexmlc --format=html5 --javascript=LaTeXML-maybeMathjax.js --css=plr-style.css --stylesheet=xsl/LaTeXML-all-xhtml.xsl --javascript=adjust-svg.js --destination=$@ -
+	latexmlc --format=html5 --bibliography=$(DISPLAYDIR)/coaltheory.xml --javascript=latexmliness/LaTeXML-maybeMathjax.js --css=latexmliness/plr-style.css --stylesheet=latexmliness/xsl/LaTeXML-all-xhtml.xsl --javascript=latexmliness/adjust-svg.js --destination=$@ $<
 
-$(DISPLAYDIR)/%.xhtml : $(DISPLAYDIR)/%.xml
-	latexmlpost --css=plr-style.css --javascript=LaTeXML-maybeMathjax.js --javascript=adjust-svg.js --stylesheet=xsl/LaTeXML-all-xhtml.xsl --destination=$@ $<
+$(DISPLAYDIR)/%.xhtml : $(DISPLAYDIR)/%.xml $(DISPLAYDIR)/coaltheory.xml
+	$(eval FIGS := $(shell grep includegraphics $*.tex  | sed -e 's/.*\\includegraphics[^{]*{\([^}]*\)\}.*/$(DISPLAYDIR)\/\1.svg/'))
+	echo 'making $(FIGS)'
+	if [ '$(FIGS)' ]; then make $(FIGS); fi
+	latexmlpost --bibliography=$(DISPLAYDIR)/coaltheory.xml --css=latexmliness/plr-style.css --javascript=latexmliness/LaTeXML-maybeMathjax.js --javascript=latexmliness/adjust-svg.js --stylesheet=latexmliness/xsl/LaTeXML-all-xhtml.xsl --destination=$@ $<
 
 $(DISPLAYDIR)/%.xml : %.tex
 	rm -f LaTeXML.cache
-	( cat header.tex; echo '\input{$<}'; cat tailer.tex ) | latexml --destination=$@ -
-
-%.pdf : %.ink.svg
-	inkscape $< --export-pdf=$@
+	latexml --preamble=header.tex --postamble=tailer.tex --destination=$@ $<
 
 %.svg : %.ink.svg
 	inkscape $< --export-plain-svg=$@
+
+$(DISPLAYDIR)/%.svg : %.ink.svg
+	inkscape $< --export-plain-svg=$@
+
+%.pdf : %.ink.svg
+	inkscape $< --export-pdf=$@
 
 %.svg : %.pdf
 	inkscape $< --export-plain-svg=$@
