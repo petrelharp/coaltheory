@@ -25,7 +25,7 @@ I am aiming for the papers we read to complement the lectures: so, there will be
 Expectations
 ------------
 
-I expect everyone to turn in, at the start of each class, a short (half page or less) of question and/or observation from the weekly discussion paper, due at the start of each class.  At the end of my section of the course (on March 4th), I also expect a two-page writeup either summarizing further readings in the literature, or the results of simulating something we've learned about in class.  An example of the first would be to read a few more papers on a particular topic, and write a summary of the main results, methods, and relationship to current practice.  An example of the second would be to simulate a particular population process of interest, and compare the results to theory.  I will provide suggestions for either, and am open to your ideas.
+I expect everyone to turn in, at the start of each class, a short (half page or less) of question and/or observation suitable as a topic for discussion from the weekly discussion paper.  At the end of my section of the course (on March 4th), I also expect a two-page writeup either summarizing further readings in the literature, or the results of simulating something we've learned about in class.  An example of the first would be to read a few more papers on a particular topic, and write a summary of the main results, methods, and relationship to current practice.  An example of the second would be to simulate a particular population process of interest, and compare the results to theory.  I will provide suggestions for either, and am open to your ideas.
 
 
 Readings
