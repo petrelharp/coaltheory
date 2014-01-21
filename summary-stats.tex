@@ -29,10 +29,56 @@ to sampling distributions of properties of the pedigree with recombination.
 
 \subsection{Number of segregating sites}
 
-XXX Mean and variance as obtained from distribution of total time in the sample tree, as in \citep{hudson1990gene}.
+As a first example,
+we can relate the mean and variance of the number of segregating sites in a sample
+to the distribution of total time in the sample tree, as described in \citep{hudson1990gene}.
+The number of segregating sites, $A_0$, in a sample of $k$ chromosomes at $|S|$ loci,
+is the number of sites at which at least two of the sampled chromosomes differ.
+For this to happen, there must have been a mutation at that site somewhere on the tree that relates the samples.
+
+Concretely, suppose that we have sampled $k$ chromosomes,
+and that (as above) the tree relating these samples at genomic position $x$ is $T_x$.
+We measure ``length'' of the tree in meioses,
+and denote by $|T_x|$ the total number of meioses the tree,
+up until the most recent common ancestor.
+Also, let $N_x$ denote the total number of mutations that have occurred at site $x$ during any of the meioses anywhere in $T_x$.
+Under the usual assumption on mutations,
+this number is Poisson distributed with mean $\mu |T_x|$.
+
+Now let $X$ denote a randomly chosen locus,
+$T = |T_X|$, and $N = N_X$.
+It is straightforward that
+\begin{align}
+  \E[N] = \mu \E[T]
+\end{align}
+and using the formula for conditional partitioning of variance,
+\begin{align}
+  \var[N] &= \E[ \var[N|T] ] + \var[ \E[N|T] ] \\
+    &= \E[ \mu T ] + \var[ \mu T ] .
+\end{align}
+Note that this remains true if $\mu$ depends on $x$.
+
+Now, by linearity of expectation,
+\begin{align}
+  \E[A_0] = \E[ \sum_x N_x] = |S| \E[\mu T] .
+\end{align}
+Similarly, by conditioning on the collection of trees $\mathcal{T} = \{ T_x \st x \in S\}$,
+since $N_x$ and $N_y$ are conditionally independent given $T_x$ and $T_y$,
+\begin{align}
+  \var[A_0] &= \E[ \var[A_0 | \mathcal{T} ] ] + \var\left[ \E[ A_0 | \mathcal{T} ] \right] \\
+  &= \E \left[ \sum_{x,y\in S} \cov[N_x,N_y|\mathcal{T}] \right] + \var\left[ \sum_{x \in S} \E[ N_x | \mathcal{T} ] \right] \\
+  &= \E \left[ \sum_{x\in S} \var[N_x|\mathcal{T}] \right] + \var\left[ \sum_{x \in S} \E[ N_x | \mathcal{T} ] \right] \\
+  &= \E \left[ \sum_{x \in S} \mu |T_x| \right] + \var\left[ \sum_{x \in S} \mu |T_x| \right] \\
+  &= \E \left[ \sum_{x \in S} \mu |T_x| \right] + \sum_{x,y \in S} \cov\left[ \mu |T_x|, \mu |T_y| \right] \\
+  &= \mu |S| \E [ T ] + \mu^2 |S| \var[T] + \sum_{x \neq y \in S} \cov\left[ \mu |T_x|, \mu |T_y| \right] .
+\end{align}
+This agrees with \citet{hudson1990gene} if we are restricted to a single, nonrecombining locus.
+
+Perhaps you have noticed some sloppiness here:
+which quantities are random, and which not?
 
 
-
+%%%% %%%%%%% %%%%%%%
 \subsection{Heterozygosity} 
 
 The ``observed heterozygosity'' in a group of individuals in a genomic region 
