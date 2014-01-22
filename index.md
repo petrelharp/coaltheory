@@ -1,4 +1,4 @@
-INTRODUCTION TO COALESCENT THEORY
+NOTES ON COALESCENT THEORY
 =================================
 
 Spring 2014 -- Peter Ralph -- USC 
@@ -8,11 +8,14 @@ http://petrelharp.github.io/coaltheory/outline.html
 Notes
 =====
 
-Here are links to web pages of notes that roughly follow the course.  They are xhtml, with svg figures, so they might not work in IE; get firefox or opera if you have troubles. Or, download the source from [my github repository](https://github.com/petrelharp/coaltheory) and build whatever you want from the latex.
+Here are links to web pages of notes that roughly follow the course.  They are xhtml, with svg figures, so they might not work in IE; get firefox or opera if you have troubles. Or, download the source from [my github repository](https://github.com/petrelharp/coaltheory) and build whatever you want from the latex.  They are currently (Spring 2014) in rapid upheaval.
 
 1. [Introduction](introduction.xhtml)
 2. [Summary statistics (of the realized ancestral recombination graph)](summary-stats.xhtml)
 
+If you use these notes, please cite them, for instance:
+  Notes on Coalescent Theory, preprint, Peter Ralph, 2014.  http://petrelharp.github.io/coaltheory
+  
 
 Overview
 ========

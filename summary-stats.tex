@@ -26,7 +26,27 @@ or in protein coding regions.
 Here we relate the sampling distributions of a number of statistics easily computable form $G$
 to sampling distributions of properties of the pedigree with recombination.
 
+We will study aspects of the distributions of these statistics under various ``levels of sampling'':
+\begin{enumerate}
+  \item Unconditional, including averaging over the population process.
+  \item Conditional on the population pedigree ($\pedigree$),
+    and averaging over recombinations, segregation, and mutations.
+  \item Conditional on the population ARG ($\meioses$), 
+    averaging over choices of individuals.
+  \item Conditional on the population ARG ($\meioses$),
+    averaging over choices of locus.
+\end{enumerate}
+Only the first needs a population model.
+The second is clearly fictitious, but can be useful (as we see below).
+The latter two can be interpreted as empirical distributions.
+Often, in practice, we have an empirical distribution obtained averaging across many loci (as in the last point),
+and compare it to a theoretical distribution for a single locus under a population model.
+This is in principle wrong, 
+since it ignores correlations between loci introduced by the pedigree,
+but in practice seems to be pretty good \citep{wakeley2012genealogies}.
 
+
+%%%%%% %%%%%%% %%%%%%%%
 \subsection{Number of segregating sites}
 
 As a first example,
@@ -99,15 +119,22 @@ of times back to the most common ancestor of paired homologous sites, averaged a
 Let $\tau_H$ denote this distribution, i.e.\ $\P\{ \tau_H = t \} = \#\{ (i,j) \st \tau_{ij} = t \} / |S||A|$.
 If, as assumed, there is no back mutation, then,
 \begin{align}
-  H_O &= \frac{1}{|S|\,|A|} \sum_{i \in A} \sum_{j \in S} (1-\mu_d)^{2 \tau_{ij}} \\
-  &= \E\left[ (1-\mu_d)^{2 \tau_H} \right] \\
-    &= \E\left[ e^{-2 \mu \tau_H } \right] .
+  \E[ H_O \vert \meioses ] &= \frac{1}{|S|\,|A|} \sum_{i \in A} \sum_{j \in S} \left( 1 - (1-\mu_d)^{2 \tau_{ij}} \right) \\
+      &= \E\left[ 1-(1-\mu_d)^{2 \tau_H} \right] \\
+      &= \E\left[ 1-e^{-2 \mu \tau_H } \right] .
 \end{align}
 Note that $\tau_H$, if it was observable, would be a good \emph{summary statistic} (albeit complicated) of the pedigree,
 and depends implicitly on the choice of individuals $A$ and the choice of genomic region $S$.
 If $\mu$ is small, then $H_O \approx \mu \E[ \tau_H ]$,
 i.e.\ the proportion of sites that an individual is heterozygous
 is equal to the mutation rates multiplied by the average time back to the common ancestor of the maternal and paternal chomosomes.
+
+Similarly, 
+\begin{align}
+  \var[ H_0 \vert \meioses ] &= \frac{1}{|S|\,|A|} \E\left[ e^{-2 \mu \tau_H } \left( 1 - e^{-2 \mu \tau_H } \right) \right] .
+\end{align}
+This implies that the observed heterozygosity $H_0$ is an estimtor of the statistic $\E[ \tau_H ]$ of the empirical distribution of pairwise coalescence times,
+and that can put some explicit bounds on how good this estimator is.
 
 As stated, $H_O$ is a single number, the chance that a randomly chosen homologous pair of alleles differ.
 This averages over levels of relatedness of different individuals,

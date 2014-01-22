@@ -81,13 +81,13 @@ $(DISPLAYDIR)/%.html : %.tex $(DISPLAYDIR)/coaltheory.xml
 	rm -f LaTeXML.cache
 	latexmlc --format=html5 --bibliography=$(DISPLAYDIR)/coaltheory.xml --javascript=latexmliness/LaTeXML-maybeMathjax.js --css=latexmliness/plr-style.css --stylesheet=latexmliness/xsl/LaTeXML-all-xhtml.xsl --javascript=latexmliness/adjust-svg.js --destination=$@ $<
 
-# $(DISPLAYDIR)/%.xhtml : %.tex $(DISPLAYDIR)/coaltheory.xml
+# $(DISPLAYDIR)/%.xhtml : %.tex $(DISPLAYDIR)/coaltheory.xml header.tex tailer.tex
 # 	$(eval FIGS := $(shell grep includegraphics $*.tex  | sed -e 's/.*\\includegraphics[^{]*{\([^}]*\)\}.*/$(DISPLAYDIR)\/\1.svg/'))
 # 	echo 'making $(FIGS)'
 # 	if [ '$(FIGS)' ]; then make $(FIGS); fi
 # 	latexmlc --format=xhtml --bibliography=$(DISPLAYDIR)/coaltheory.xml --javascript=latexmliness/LaTeXML-maybeMathjax.js --css=latexmliness/plr-style.css --stylesheet=latexmliness/xsl/LaTeXML-all-xhtml.xsl --javascript=latexmliness/adjust-svg.js --destination=$@ $<
 
-$(DISPLAYDIR)/%.xhtml : $(DISPLAYDIR)/%.xml $(DISPLAYDIR)/coaltheory.xml
+$(DISPLAYDIR)/%.xhtml : $(DISPLAYDIR)/%.xml $(DISPLAYDIR)/coaltheory.xml header.tex tailer.tex
 	$(eval FIGS := $(shell grep includegraphics $*.tex  | sed -e 's/.*\\includegraphics[^{]*{\([^}]*\)\}.*/$(DISPLAYDIR)\/\1.svg/'))
 	echo 'making $(FIGS)'
 	if [ '$(FIGS)' ]; then make $(FIGS); fi
