@@ -223,11 +223,11 @@ and define $F_k$ to be the number of sites with the allele `1' is at frequency $
 \end{align}
 and the ``unfolded'' and ``folded'' allele frequency spectra 
 \begin{align}
-  a_k^* &= \frac{ F_k }{ F_1 + \cdots + F_{n-1} }
+  a_k^* &= \frac{ F_k }{ F_1 + \cdots + F_{n-1} } \\
   a_k &= \begin{cases} 
     \frac{ F_{n/2} }{ F_1 + \cdots + F_{n-1} } \qquad \text{if } k = n/2 \\
     \frac{ F_k + F_{n-k} }{ F_1 + \cdots + F_{n-1} } \qquad \text{if } k \neq n/2 
-  \end{cases} \\
+  \end{cases} 
 \end{align}
 If we have some way of polarizing mutations, so that e.g.\ allele `0' is more likely to be the ancestral allele,
 then the unfolded spectrum is more useful;
@@ -256,10 +256,16 @@ Therefore,
   \E[ F_k \vert \meioses ] &= \sum_j \P\{ N_{j,1}=k \vert \tree_j \} \\
         &= \mu \sum_j T_{j,k}  \exp(-\mu |\tree_j|) ,
 \end{align}
-and
+and since \emph{given the marginal gene trees}, the mutation processes at each site are assumed to be independent,
 \begin{align}
   \var[ F_k \vert \meioses ] &= \mu \sum_j T_{j,k}  \exp(-\mu |\tree_j|) \left( 1 - \mu T_{j,k}  \exp(-\mu |\tree_j|) \right).
 \end{align}
+Therefore, if the number of mutations in the region under consideration is large,
+then $F_k$ is well-approximated by $\mu$ times the sum of the appropriate edges in the trees:
+\begin{align}
+  F_k = \mu \sum_j T_{j,k}
+\end{align}
+
 
 Therefore, 
 \begin{align}
