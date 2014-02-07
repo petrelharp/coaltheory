@@ -214,36 +214,70 @@ at loci with no more than two alleles, all dichotomous partitions are possible.
 \end{figure}
 
 Suppose we are looking at the empirical distribution of allele frequencies in a sample of size $|A|=n$
-at biallelic sites
-(the ``allele frequency spectrum'', or ``site frequency spectrum''),
-and let $(N_{j,0},N_{j,1})$ denote the numbers of sampled chromosomes that have the '0' and '1' alleles, respectively.
-The ``unfolded'' and ``folded'' allele frequency spectra are then
+at biallelic sites, including only the polymorphic sites, i.e.\ the sites where more than one allele is seen in the sample.
+This is called the ``allele frequency spectrum'', or ``site frequency spectrum''.
+Let $(N_{j,0},N_{j,1})$ denote the numbers of sampled chromosomes that have the `0' and `1' alleles, respectively,
+and define $F_k$ to be the number of sites with the allele `1' is at frequency $k$, or
 \begin{align}
-  a_k^* &= \frac{ \#\{ j : N_{j,0} = k \} }{ |S| } \quad & k &\in \{0,1,\ldots,n\} \\
-  a_k &= \frac{ \#\{ j : \min\{N_{j,0},N_{j,1}\} = k \} }{ |S| } \quad & k &\in \{0,1,\ldots,\floor{n/2}\} .
+  F_k &= \frac{ \#\{ j : N_{j,0} = k \} }{ |S| } \quad & k &\in \{0,1,\ldots,n\} \\
+\end{align}
+and the ``unfolded'' and ``folded'' allele frequency spectra 
+\begin{align}
+  a_k^* &= \frac{ F_k }{ F_1 + \cdots + F_{n-1} }
+  a_k &= \begin{cases} 
+    \frac{ F_{n/2} }{ F_1 + \cdots + F_{n-1} } \qquad \text{if } k = n/2 \\
+    \frac{ F_k + F_{n-k} }{ F_1 + \cdots + F_{n-1} } \qquad \text{if } k \neq n/2 
+  \end{cases} \\
 \end{align}
 If we have some way of polarizing mutations, so that e.g.\ allele `0' is more likely to be the ancestral allele,
 then the unfolded spectrum is more useful;
 otherwise, if the choice of allele labeling is arbitrary, 
 we expect $a_k^* = a_{n-k}^*$ and the folded spectrum is more natural.
 
+Now, we'll compute the mean and variance of $F_k$
+conditional on the ARG $\meioses$, averaging across the mutation process.
+Let $\tree_j$ be the gene three at site $j$,
+and let $T_{j,k}$ be the total length of branches in $\tree_j$ subtended by exactly $k$ tips,
+so that $|\tree_j| = \sum_{k=1}^{n-1} T_{j,k}$
+(see figure \ref{fig:frequency_spectra_trees}).
+Again assuming that the mutation is independent of inheritance,
+the probability that site $j$ has no segregating mutation is $\exp(-\mu |\tree_j|)$,
+and the probability that only a single segregating mutation has occurred is $\exp(-\mu |\tree_j|) \mu |\tree_j|$.
+Given that only a single mutation has occurred,
+the location of that mutation is uniform on the tree,
+and so the probability that a mutation occurs at frequency $k$ at site $j$ is
+\[
+\P\{ N_{j,1}=k \vert \tree_j \}
+  % = \frac{ T_{j,k} }{ |\tree_j| }  \mu |\tree_j| \exp(-\mu |\tree_j|) 
+  = \mu T_{j,k}  \exp(-\mu |\tree_j|)  = \mu T_{j,k} + O(\mu^2 |\tree_j|^2).
+\]
+Therefore, 
+\begin{align}
+  \E[ F_k \vert \meioses ] &= \sum_j \P\{ N_{j,1}=k \vert \tree_j \} \\
+        &= \mu \sum_j T_{j,k}  \exp(-\mu |\tree_j|) ,
+\end{align}
+and
+\begin{align}
+  \var[ F_k \vert \meioses ] &= \mu \sum_j T_{j,k}  \exp(-\mu |\tree_j|) \left( 1 - \mu T_{j,k}  \exp(-\mu |\tree_j|) \right).
+\end{align}
+
+Therefore, 
+\begin{align}
+  \E[ a^*_k \vert \meioses ] &= XXX
+\end{align}
+
+the expected contribution of sites with only a single segregating mutation
+to $a_k^*$ is $\E\left[ \exp(-\mu |T|) \mu T_k \right]$.
+to first order in $\mu |T|$, this says that $a_k^*$ is $\E[T_k]/\E[|T|]$,
+the average total number of ancestors of exactly $k$ of the samples
+divided by the average total number of ancestors up until the most recent common ancestor of all $n$ samples.
+
+
 This distribution is obtained by averaging across loci.
 Pick a random locus, and call the tree relating the samples at that locus $T$.
 Let $|T|$ denote the total length of the tree (in meioses),
 and $T_k$ denote the total length of all branches in the tree that are subtended by exactly $k$ tips,
 for $1 \le k \le n-1$, so that $|T| = \sum_{k=1}^{n-1} T_k$.
-(see figure \ref{fig:frequency_spectra_trees}).
-Again assuming that the mutation is independent of inheritance,
-the probability that a site has no segregating mutation is
-$\exp(-\mu |T|)$, which is the value of $a_0$, up to sampling error.
-The probability that only a single segregating mutation has occurred is $\exp(-\mu |T|) \mu |T|$,
-and given this,
-the location of that mutation is uniform on the tree.
-Therefore, the expected contribution of sites with only a single segregating mutation
-to $a_k^*$ is $\E\left[ \exp(-\mu |T|) \mu T_k \right]$.
-to first order in $\mu |T|$, this says that $a_k^*$ is $\E[T_k]/\E[|T|]$,
-the average total number of ancestors of exactly $k$ of the samples
-divided by the average total number of ancestors up until the most recent common ancestor of all $n$ samples.
 
 
 
