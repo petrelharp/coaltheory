@@ -263,27 +263,22 @@ and since \emph{given the marginal gene trees}, the mutation processes at each s
 Therefore, if the number of mutations in the region under consideration is large,
 then $F_k$ is well-approximated by $\mu$ times the sum of the appropriate edges in the trees:
 \begin{align}
-  F_k = \mu \sum_j T_{j,k}
+    F_k = \mu \sum_j T_{j,k} + O( \sqrt{\mu \sum_j T_{j,k}} ) , \qquad \text{given $\meioses$}.
 \end{align}
 
 
-Therefore, 
+Therefore, % if we let $F_{S} = \sum_{k=1}^{n-1} F_{k}$ denote the number of segregating sites,
 \begin{align}
-  \E[ a^*_k \vert \meioses ] &= XXX
+    \E[ a^*_k \vert \meioses ] &\approx \frac{ \sum_j T_{j,k} }{ \sum_j |\tree_j| }  .
+    % + O\left( \mu \frac{1}{|S|} \sum_j |\tree_j| + F_{S}^{-1/2} \right) .
 \end{align}
+The approximation holds if the number of sites at which two or more mutations have occurred is small,
+and if the total number of segregating sites is large.
+In other words, $a_k^*$ gives, to good approximation, 
+the chance that a genetic ancestor,
+chosen uniformly among those genetic ancestors of some (but not all) of the sample,
+is a genetic ancestor to exactly $k$ of the sampled chromosomes.
 
-the expected contribution of sites with only a single segregating mutation
-to $a_k^*$ is $\E\left[ \exp(-\mu |T|) \mu T_k \right]$.
-to first order in $\mu |T|$, this says that $a_k^*$ is $\E[T_k]/\E[|T|]$,
-the average total number of ancestors of exactly $k$ of the samples
-divided by the average total number of ancestors up until the most recent common ancestor of all $n$ samples.
-
-
-This distribution is obtained by averaging across loci.
-Pick a random locus, and call the tree relating the samples at that locus $T$.
-Let $|T|$ denote the total length of the tree (in meioses),
-and $T_k$ denote the total length of all branches in the tree that are subtended by exactly $k$ tips,
-for $1 \le k \le n-1$, so that $|T| = \sum_{k=1}^{n-1} T_k$.
 
 
 
