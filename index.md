@@ -41,8 +41,8 @@ Readings
 4. (2/4) [Inference of human population history from individual whole-genome sequences](http://dx.doi.org/10.1038/nature10231), Li and Durbin, 2009.  This paper, remarkably, shows how to use a single diploid sequence to infer past coalescent rates.  Be sure to read the methods in the supplement; and also, [Fast "coalescent" simulation](http://www.ncbi.nlm.nih.gov/pubmed/16539698), Marjoram and Wall, 2006, for a more readable description of the Markov assumption made here.
 5. (2/11) [Classic selective sweeps were rare in recent human evolution](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3669691), Hernandez et al 2011; and [Pervasive Adaptive Protein Evolution Apparent in Diversity Patterns around Amino Acid Substitutions in *Drosophila simulans*](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3037414/), Sattath et al 2011.  These two similar papers use mostly descriptive statistics of whole-genome data to look in aggregate at the nature of recent selection in humans and a fruit fly.
 6. (2/18) (find one or several papers you would like to read and report on)
-7. (2/25)
-8. (3/4)
+7. (2/25) (ten-minute student summaries of your papers)
+8. (3/4) (ten-minute student summaries of your papers)
 
 
 
